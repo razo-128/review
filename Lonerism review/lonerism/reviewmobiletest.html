@@ -241,13 +241,21 @@
 					padding: 5px 10px;
 					border-radius: 5px;
 					font-size: 14px;
-					width: auto; /* Allows it to adjust */
-					max-width: 80%; /* Prevents cut-off */
-					word-wrap: break-word; /* Breaks long words */
+					width: auto;
+					max-width: 80%; /* Prevents it from going off screen */
+					max-height: 200px; /* Limiting the height */
+					overflow-y: auto; /* Adds a scrollbar if the content overflows */
+					word-wrap: break-word;
 					z-index: 1000;
 					left: 50%;
-					transform: translateX(-50%); /* Centers it */
-					bottom: 35px;
+					transform: translateX(-50%);
+					bottom: 45px; /* Keeps it a bit above the audio box */
+				}
+
+				/* Prevent tooltip box from overflowing vertically */
+				.tooltip-box p {
+					margin: 0;
+					padding: 0;
 				}
 			}
     </style>
