@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lonerism Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: white;
+            color: black;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        nav {
+            background-color: black;
+            padding: 10px;
+            position: relative;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            justify-content: center;
+        }
+        nav ul li {
+            display: inline;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        .menu-icon {
+            display: none;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+        .content {
+            padding: 20px;
+        }
+        .quote-image {
+            position: relative;
+            display: inline-block;
+        }
+        .quote-image img {
+            transition: transform 0.3s ease-in-out;
+        }
+        .quote-image:hover img {
+            transform: scale(1.05);
+        }
+        .tooltip {
+            border-bottom: 2px dotted black;
+            cursor: pointer;
+            position: relative;
+        }
+        .tooltip:hover::after {
+            content: attr(data-link);
+            position: absolute;
+            left: 0;
+            bottom: -25px;
+            background-color: purple;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            white-space: nowrap;
+        }
+        .review-selection {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .review-card {
+            width: 200px;
+            padding: 10px;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+        .review-card img {
+            width: 100%;
+            transition: transform 0.3s;
+        }
+        .review-card:hover img {
+            transform: scale(1.05);
+        }
+        @media (max-width: 768px) {
+            .menu-icon {
+                display: block;
+            }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background: black;
+                position: absolute;
+                width: 100%;
+                top: 40px;
+                left: 0;
+            }
+            nav ul.show {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="menu-icon">☰</span>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="lonerism/review1.html">Lonerism</a></li>
+            <li><a href="contacts.html">Kapcsolat</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>Értékelések, kritikák</h1>
+        <div class="review-selection">
+            <div class="review-card" onclick="window.location.href='lonerism/review1.html'">
+                <img src="images/lonerism.jpg" alt="Tame Impala - Lonerism">
+                <p><strong>Tame Impala: Lonerism<strong> <br>A magány hangja</p>
+            </div>
+            <div class="review-card" onclick="window.location.href='ep/review2.html'">
+                <img src="images/ep.jpg" alt="Tame Impala - EP">
+                <p><strong> Tame Impala: EP <br>Korai Évek</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Ranga Zoltán</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.menu-icon').addEventListener('click', () => {
+                document.querySelector('nav ul').classList.toggle('show');
+            });
+        });
+    </script>
+</body>
+</html>
