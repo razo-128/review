@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lonerism Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: white;
+            color: black;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 100px;
+            font-size: 1rem;
+        }
+
+        nav {
+            background-color: black;
+            padding: 10px;
+            width: 100%;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            justify-content: center;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+		.content {
+			max-width: 800px;
+			width: 100%;
+			margin: 0 auto; /* Ensure content is centered */
+			padding: 20px;
+			opacity: 0;
+			transition: opacity 1s ease-in;
+			margin-bottom: 120px; /* Prevent content from going under the audio player */
+		}
+		
+        h1, .quote-image, .navigation-buttons {
+            text-align: center;
+        }
+
+        p {
+            text-align: left;
+        }
+
+        .quote-image {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+			 max-width: 600px; /* Adjust the width of the container */
+			margin: 0 auto; /* Center the container */
+        }
+
+        .quote-image img {
+		    width: 100%; /* Makes the image responsive */
+			max-width: 550px; /* Restrict the maximum width */
+			height: auto; /* Maintain aspect ratio */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .quote-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .tooltip {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            position: relative;
+            color: purple;
+        }
+
+        .tooltip img {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .tooltip:hover img {
+            display: block;
+        }
+
+        .tooltip-click {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            color: purple;
+        }
+
+        .tooltip-box {
+            display: none;
+            position: absolute;
+            background-color: purple;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: normal;
+            font-size: 15px;
+            width: 300px;
+            max-width: 90%;
+            z-index: 1000;
+        }
+
+        .navigation-buttons {
+            margin-top: 20px;
+        }
+
+        .navigation-buttons a {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navigation-buttons a:hover {
+            background-color: purple;
+            color: white;
+        }
+
+        .audio-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .audio-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .audio-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .audio-info img:hover {
+            transform: scale(1.1);
+        }
+
+        audio::-webkit-media-controls-panel {
+            background-color: purple;
+            border-radius: 10px;
+        }
+
+        strong {
+            font-weight: bold !important;
+        }
+
+        .large-paragraph {
+            font-size: 18px;
+            font-weight: bold;
+        }
+			span.italic {
+				font-style: italic;
+		}
+		
+		.flex-container {
+			display: flex;
+			align-items: center;
+			gap: 20px; /* Adjust the space between elements */
+			margin-top: 10px;
+		}
+
+		.flex-container img {
+			width: 55%; /* Adjust image size */
+			height: auto;
+			border-radius: 12px;
+		}
+
+        /* Responsive styles */
+			@media (max-width: 600px) {
+				body {
+					font-size: 0.9rem;
+					padding-bottom: 80px; /* Ensures space for audio player */
+				}
+
+				.audio-container {
+					position: fixed;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					background-color: #f3f3f3;
+					padding: 10px;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 10px;
+					box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+				}
+
+				.audio-info {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					flex: 1;
+					min-width: 0;
+				}
+
+				.audio-info img {
+					width: 50px;
+					height: 50px;
+					flex-shrink: 0;
+				}
+
+				.audio-container audio {
+					flex: 2;
+					width: 100%;
+				}
+
+				.navigation-buttons {
+					margin-bottom: 100px; /* Pushes it above audio player */
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+				}
+
+				.tooltip-box {
+					position: absolute;
+					background-color: purple;
+					color: white;
+					padding: 5px 10px;
+					border-radius: 5px;
+					font-size: 14px;
+					width: auto;
+					max-width: 80%; /* Prevents it from going off screen */
+					max-height: 200px; /* Limiting the height */
+					overflow-y: auto; /* Adds a scrollbar if the content overflows */
+					word-wrap: break-word;
+					z-index: 1000;
+					left: 50%;
+					transform: translateX(-50%);
+					bottom: 45px; /* Keeps it a bit above the audio box */
+				}
+
+				/* Prevent tooltip box from overflowing vertically */
+				.tooltip-box p {
+					margin: 0;
+					padding: 0;
+				}
+			}
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../home.html">Home</a></li>
+            <li><a href="review1.html">Lonerism</a></li>
+            <li><a href="../contacts.html">Kapcsolat</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>7. It Feels Like We Only Go Backwards</h1>
+        <p class="large-paragraph">Ha eddig még nem volt egyértelmű, Kevin Parker szereti a hosszabb címeket, és szereti bennük lelőni a dalszöveget is.</p>
+        <p>Ez legpopposabb dal az albumon, ami nem véletlen, hisz egy <a class="tooltip" href="https://en.wikipedia.org/wiki/Beach_House" target="_blank" data-image="../images/beachhouse.jpg">Beach House<img src="../images/beachhouse.jpg"></a> szám, a „Walk In The Park” véletlen folytatása ként készült el, azonos tempóval és azonos hangnemben, még a dallama is hátborzongatóan hasonló. Kevin azt nyilatkozta, hogy amikor egyszer hallgatta azt a dalt, akkor miután véget ért, a fejében folytatódott tovább és így született meg a „Olyan érzés, mintha csak visszafele mennénk”. A dal egy híres dzsessz akkordmenetet használ fel megfordítva, ami egy aranyos utalás a számra és a címére.</p>
+			<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0GBVYIdyn5q6cWh0KsTiml?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+		<p>Ez szám a második single az albumról, és videóklipje is van. A klipet a „<a class="tooltip" href="https://en.wikipedia.org/wiki/Don%27t_Hug_Me_I%27m_Scared" target="_blank" data-image="../images/dont1.jpg">Don't Hug Me I'm Scared<img src="../images/dont1.jpg"></a>” készítői csinálták, és a végeredmény egy igazán pszichedelikus gyurma animáció. Megjelenik a fej-a-fejben motívum, ami a gondolatokban való elvesződést szimbolizálja. Ez a szimbolum szerepelt később a Mind Mischief videóklipjében, majd a <a class="tooltip" href="https://levitation-room.com/" target="_blank" data-image="../images/levit1.jpg">'levitation room'<img src="../images/levit1.jpg"></a> nevű zenekar 2015-ös EP-jén, a <a class="tooltip" href="https://www.discogs.com/master/2509615-Levitation-Room-Minds-Of-Our-Own" target="_blank" data-image="../images/minds1.jpg">Minds Of Our Own<img src="../images/minds1.jpg"></a>-on.<br/>Tematikaikailag viszonylag közel áll a Mind Mischief-hez, ismét szerelmi bánatról van szó.</p>
+		
+        <div class="quote-image">
+            <img src="../images/feels2.gif" alt="blank">
+            <blockquote><span style="color: purple;">Részlet a videóklipből</span></blockquote>
+        </div>
+        
+		<p>A kórusban egy „<i>baby</i>”-t vagy „<i>darling</i>”-ot szólít fel, mindkettő aranyos becenév egy partnerre. A dalban nemsokára kiderül, hogy ez nem is partner, csak egy lány, akiért rajong. A dal személye úgy érzi, hogy csak „visszafele megy” a szerelmi életében, de mégis minden porcikája azt mondja, hogy „Előre!”. <br/>Nem nehéz megfejteni, hogy ez alatt szimplán arra gondol, hogy tovább kellene lépnie, de a lány visszarántja. A következő sorban azt mondja, hogy felcsillant benne a remény, tehát a szerelme valami olyat tett, amitől megint azt hiszi, hogy próbálkoznia kellene. Ugyanebben a sorban azt mondja, hogy „oh ne, ne megint”, utalva arra, hogy már ő sem akarja folytatni ezt a sóvárgást a lány irányt, de az érzelmei mást mondanak. A kórus utolsó sorában megismétli, hogy csak visszafele megy, lényegében minden előrelepésénél kettőt visszalép.</p>
+
+		<p>Az első versszakban kifestődik a kép a valóságról- a lány csak kedvesen viselkedik vele, játszadozik vele, de ez csak mélyíti a narrátor vele való megszálltságat. Arról énekel, hogy a lány vicceskedve szólítja a dal énjének nevét, de ő egész nap ezt hallja, nem tudja kiverni a fejéből. Már csak annyiból is azt gondolja, hogy a lányt is érdekli ő, hogy szimplán kimondja a nevét. Ezután azt mondja, hogy abba a reménybe kapaszkodik, hogy a lány valós érzései nem mutatkoznak, ez alatt a játszadozás alatt lehet, hogy tényleges szeretet lapul, de persze legbelül a szám személye jól tudja, hogy ez egyáltalán nem így van.</p>
+
+		<p>Ezt újból egy kórus követi, majd rögtön utána jön a második versszak. Itt arról énekel, hogy a „határozatlanság magja” nem ő benne rejlik, hanem a lányban. A dal énje már rég eldöntötte: szereti a lányt. Viszont hiába próbálja elérni, hogy a lány is visszaszeresse, ezzel csak ellentétjét éri el, egyre távolabb tolja őt, döntésképtelenné teszi. Ezt be is látja a versszak második felében, „Így megy ez, ha el akarsz érni valami igazit.”</p>
+
+		<p>Ezt ismét egy kórus követi- sőt a szám végéig már csak a kórus megy. Persze a szintetizátorok változnak, és nem válik unalmassá. Kevin Parker a repetíció mestere, egyszerre ismétli ugyanazt de mozdítja ugyanakkor előre a számot és eközben a fülébe mászik az embernek, majd utána napokig ki nem lehet onnan szedni. A vége fele a háttérben az egyik orgona kicsit eltorzul, majd a legvégén azzal zárul, hogy minden abbamarad és csak a reverb és delay effektek maradnak, amik szépen lassan elhalványulnak.</p>
+
+		 <div class="quote-image">
+            <img src="../images/feels1.jpg" alt="blank">
+
+        </div>
+
+		<p><br/>A szintetizátorok kettő orgona hangból állnak, mindkettőn delay-el és szaturátorral. Több információt sajnos nem találtam, valószínűleg egy Juno szintetizátorral érte el a számon található hangokat, igazából semmi különleges, de működik.</p>
+
+		<p>A basszusgitár elég groovy és fülbemászó, szépen kiegészíti a számot. A dobolás nem túl intrikált, de illik a számhoz, mivel popposabb.</p>
+
+        
+	<div class="navigation-buttons"> 
+			<a href="page9.html">Előző Oldal</a> 
+			<a href="page11.html">Következő Oldal</a> 
+		</div> 
+	</div>
+	
+    <div class="audio-container">
+        <div class="audio-info">
+			<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0LtOwyZoSNZKJWHqjzADpW?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+    </div>
+       
+
+
+	
+    <div id="tooltip-box" class="tooltip-box"></div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector(".content").style.opacity = 1;
+
+            const tooltipBox = document.getElementById("tooltip-box");
+            document.querySelectorAll(".tooltip-click").forEach(item => {
+                item.addEventListener("click", function (event) {
+                    tooltipBox.textContent = this.getAttribute("data-text");
+                    tooltipBox.style.left = event.pageX + 10 + "px";
+                    tooltipBox.style.top = event.pageY + 10 + "px";
+                    tooltipBox.style.display = "block";
+                    document.addEventListener("click", function hideTooltip(e) {
+                        if (!item.contains(e.target)) {
+                            tooltipBox.style.display = "none";
+                            document.removeEventListener("click", hideTooltip);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

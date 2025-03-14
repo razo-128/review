@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lonerism Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: white;
+            color: black;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 100px;
+            font-size: 1rem;
+        }
+
+        nav {
+            background-color: black;
+            padding: 10px;
+            width: 100%;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            justify-content: center;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+		.content {
+			max-width: 800px;
+			width: 100%;
+			margin: 0 auto; /* Ensure content is centered */
+			padding: 20px;
+			opacity: 0;
+			transition: opacity 1s ease-in;
+			margin-bottom: 120px; /* Prevent content from going under the audio player */
+		}
+		
+        h1, .quote-image, .navigation-buttons {
+            text-align: center;
+        }
+
+        p {
+            text-align: left;
+        }
+
+        .quote-image {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+			 max-width: 600px; /* Adjust the width of the container */
+			margin: 0 auto; /* Center the container */
+        }
+
+        .quote-image img {
+		    width: 100%; /* Makes the image responsive */
+			max-width: 550px; /* Restrict the maximum width */
+			height: auto; /* Maintain aspect ratio */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .quote-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .tooltip {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            position: relative;
+            color: purple;
+        }
+
+        .tooltip img {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .tooltip:hover img {
+            display: block;
+        }
+
+        .tooltip-click {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            color: purple;
+        }
+
+        .tooltip-box {
+            display: none;
+            position: absolute;
+            background-color: purple;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: normal;
+            font-size: 15px;
+            width: 300px;
+            max-width: 90%;
+            z-index: 1000;
+        }
+
+        .navigation-buttons {
+            margin-top: 20px;
+        }
+
+        .navigation-buttons a {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navigation-buttons a:hover {
+            background-color: purple;
+            color: white;
+        }
+
+        .audio-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .audio-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .audio-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .audio-info img:hover {
+            transform: scale(1.1);
+        }
+
+        audio::-webkit-media-controls-panel {
+            background-color: purple;
+            border-radius: 10px;
+        }
+
+        strong {
+            font-weight: bold !important;
+        }
+
+        .large-paragraph {
+            font-size: 18px;
+            font-weight: bold;
+        }
+			span.italic {
+				font-style: italic;
+		}
+		.flex-container {
+			display: flex;
+			align-items: center;
+			gap: 20px; /* Adjust the space between elements */
+			margin-top: 10px;
+		}
+
+		.flex-container img {
+			width: 95%; /* Adjust image size */
+			height: auto;
+			border-radius: 12px;
+		}
+
+        /* Responsive styles */
+			@media (max-width: 600px) {
+				body {
+					font-size: 0.9rem;
+					padding-bottom: 80px; /* Ensures space for audio player */
+				}
+
+				.audio-container {
+					position: fixed;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					background-color: #f3f3f3;
+					padding: 10px;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 10px;
+					box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+				}
+
+				.audio-info {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					flex: 1;
+					min-width: 0;
+				}
+
+				.audio-info img {
+					width: 50px;
+					height: 50px;
+					flex-shrink: 0;
+				}
+
+				.audio-container audio {
+					flex: 2;
+					width: 100%;
+				}
+
+				.navigation-buttons {
+					margin-bottom: 100px; /* Pushes it above audio player */
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+				}
+
+				.tooltip-box {
+					position: absolute;
+					background-color: purple;
+					color: white;
+					padding: 5px 10px;
+					border-radius: 5px;
+					font-size: 14px;
+					width: auto;
+					max-width: 80%; /* Prevents it from going off screen */
+					max-height: 200px; /* Limiting the height */
+					overflow-y: auto; /* Adds a scrollbar if the content overflows */
+					word-wrap: break-word;
+					z-index: 1000;
+					left: 50%;
+					transform: translateX(-50%);
+					bottom: 45px; /* Keeps it a bit above the audio box */
+				}
+
+				/* Prevent tooltip box from overflowing vertically */
+				.tooltip-box p {
+					margin: 0;
+					padding: 0;
+				}
+			}
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../home.html">Home</a></li>
+            <li><a href="review1.html">Lonerism</a></li>
+            <li><a href="../contacts.html">Kapcsolat</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>A B-oldal és Demók</h1>
+        <p class="large-paragraph">Utószóként még röviden megemlíteném a B-oldal számait és a demókat, elmondanék néhány érdekességet.</p>
+        
+		<p class="large-paragraph"> 1. Beverly Laurel</p>
+		<p>Egy Los Angeles-i hotelről van elnevezve, de sok köze nincs hozzá. A dob ezen a számon egy alap Ableton Live plugin, az Impulse egyik alapbeállitása, a "Vintage Funky Good Time". Kevin sok számán alapból „preset”-eket használ, de itt annyire működött, hogy bennehagyta végleges számban.
+		Ez a szám zeneileg inkább a következő albumára hasonlit, a „Currents”-re; nincs benne gitár, csak szintetizátor. Viszont a produkciójában teljesen egy Lonerism időszak béli szám.
+		A dalszövegben arról énekel, hogy mások nem tudják mi jó neki. Ez kicsit a „Solitude is Bliss”-re emlékeztet.
+		</p>
+		<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1JpcqmUlzNlK7lpFOkszzv?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+		
+		
+		<p class="large-paragraph">2. Led Zeppelin</p>
+		<p>Elég összezavaró szám, hisz az egykori egyik legnagyobb rock zenekarról, Led Zeppelinről van elnevezve. John Bonham dobolása nagy inspiráció volt Kevin számára. Kevin azt nyilatkozta, hogy a számot azért igy nevezte el, mert a groove amit kitalált kísértetiesen hasonlított egy Led Zeppelin számra. Ennek ellenére csak a gitár riffben található hasonlóság. Maga a gitár effekt már jobban hajaz a Led Zeppelin-re, kevésbé a Lonerism-re. Ez a dal Apple Music, illetve bakelit lemez exkluzív. A dalszöveg arról szól, hogy a dal énje küzd a megértésért. Végül senki sem érti meg őt, még a szakemberek sem- „Több pszichiáter sem tudta kihúzni belőlem”.</p>
+		    <div>
+                <audio controls>
+                    <source src="../audio/ledzeppelin.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>	
+			
+			
+		<p class="large-paragraph">3. Feldolgozások</p>
+		<p>A B-oldalon szereplnek feldolgozások, eközött Todd Rundgren, az albumot inspriáló személy is, aki az Elephant-ot dolgozta fel.</p>
+		<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7sQEzE2K94XJ42SBg8Chh6?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+		
+		<p class="large-paragraph">4. Demók</p>
+		<p>• Track 1: Egy egyszerű szintetizátoros bevezető, semmi több.</p>
+		<p>• Track 2, „Am I Gonna’ Die Waiting Around?”</p>
+		<div class="flex-container">
+			<p> Ez egy majdnem teljesen kész szám, hossza majdnem 2 perc. Elég repetitív, de volt benne potenciál. A dalszöveg sem túl komplex, „Meg fogok halni a várakozásban?”, tehát a dal énje fájdalmasan el akarja mondani a lánynak, hogy szereti, visszatartja magát és úgy érzi, hogy meg fog halni.</p>
+				
+				<div class="quote-image">
+					<img src="../images/waitingaround.jpg" alt="none">
+				</div>
+			</div>
+		
+		<p>• Track 3, „Apocalypse Dreams” Demó</p>
+		<p>Az Apocalypse Dreams-t eredetileg Jay Watson-nal együtt írta Kevin, ez egy ilyen demó lehet. Hallatszódik benne egy női hang, akcentusa alapján nem Melody. Inkább <a class="tooltip" href="https://www.instagram.com/solaw/?hl=en" target="_blank" data-image="../images/sophie.jpg">Sophie Lawrence Parker <img src="../images/sophie.jpg" alt="Sophie Lawrence Parker"></a> hangjára hasonlít, aki Kevin későbbi barátnője, mára felesége. Ez érdekes, mert ekkor még Melody-val volt együtt. Kérdez valamit a lány, amire Kevin válasza, hogy „csak felvétel készítek”. Úgy hangzik, mint ha a basszust venné fel, de ezt nem tudom megerősíteni a felvétel milyensége és minősége miatt. Hallatszódik még egy-két köhögés, majd megemlíti a nő Alexandro Jodorowsky „<a class="tooltip" href="https://en.wikipedia.org/wiki/The_Holy_Mountain_(1973_film)" target="_blank" data-image="../images/holy.jpg">The Holy Mountain <img src="../images/holy.jpg" alt="The Holy Mountain"></a>” cimű filmjét. A háttérben emellett úgy hangzik, hogy a többiek ebédelnek.</p>
+		<p>• Track 4, „Wait There”</p>	
+			<div class="flex-container">	
+				<p>Viszonylag egy elég befejezetlen szám, zeneileg és dalszövegben ez is elég szimpla maradt. „Várj rám ott reggel, ha hallanám, hogy hívsz.”, szól a szöveg. A dal énje már rutinosan tudja, hogy hol szokott állni a lány, és reméli, hogy egy nap majd odahívja őt is. Epedezik érte, rajong érte, de féli megközelíteni, tőle várja az első lépést. Témában elég jól beleillik az albumba. Hasonló perkussziót használt, mint ami később Currents B-sideján megtalálható „Taxi’s Here”-ben szerepel.</p>
+					<div class="quote-image">
+							<img src="../images/waitthere.jpg" alt="none">
+						</div>
+			</div>
+		<p>• Track 5, „Feels Like We Only Go Backwards” Demó:</p>
+		<p>Egy egyszerű, akusztikus gitáron játszott demó. Érdekesen, ehhez a számhoz több demó is megjelent, valószínűleg azért, mert ötlet hirtelen pattant a fejébe a „Walk In The Park” meghallgatása után, és kapkodott feljegyezni.</p>
+
+		<p>• Track 6, „Everything Comes And Goes”</p>
+		<div class="flex-container">	
+			<p>Ez egy zeneileg befejezett szám, de a szöveg kicsit nonszenszikális, látszik, hogy demó. Kevin ezt gyakran csinálja, általában értelmetlenül énekel, majd később találja ki a szöveget. A „Let It Happen” végén például nem tette ezt, a szöveget máig nem lehet pontosan tudni. Lényegében ez a dal is a változásról szól, az alapján, amit összetudtam tenni. A dob hasonlít Kevin a „Miguel – Waves” remixében levő dobolására.</p>
+					<div class="quote-image">
+							<img src="../images/everythingcomes.jpg" alt="none">
+					</div>
+		</div>
+		<p>• Track 7, „Retina Show”</p>
+			<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5uDdyVU0jDST7xmuOqpnC3?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+		<p>Ez később megjelent, mint teljes szám. Nem egy túl különleges dal, és az albumba sem igazán illik bele sehol. Emellett valamennyire a Tame Impala volt tagjaiból alapult zenekar, a Pond „<a class="tooltip" href="https://www.youtube.com/watch?v=q1vpFmRtb3c" target="_blank" data-image="../images/pond.jpg">Sitting Up On Our Crane <img src="../images/pond.jpg" alt="Sitting Up On Our Crane"></a>” cimű számára hasonlít.</p>
+
+		<p>• Track 8, „Elephant” Demó:</p>
+		<p>Innerspeaker, vagy még korábbi demó az Elephant-ról. Még inkábban koszosabb, garázs rockosabb hangzású. Az énekhang szinte alig hallható, ez elég negativ.</p>
+
+		<p>• Track 9, „If You Want Me To Show You” /„Love Is Cruel”</p>
+		<div class="flex-container">
+			<p>Még egy olyan szám, amelyben megvolt a potenciál, hogy albumra méltó legyen, és maga az ötlet, mind zeneileg, mind szövegben jó volt. A szöveg arról szól, hogy a narrátor megmondja a lánynak „Ha akarod, hogy megmutassam, / Milyen boldogok is lehetnénk, / bolondan”. Tehát a dal énje felajánlja a vak szerelmet, a boldogságot. Ezután úgy folytatja, hogy „Oly meglepettnek tűntél, / hogy elárult a szerelem, / de a szerelem kegyetlen”. Azaz a lány valószínűleg most ment keresztül egy elég kemény szakitáson. Majd jön a narrátor, a csillogó páncélú lovag, aki beakarja tölteni a lyukat a szerelmi életében a lánynak, kissé mint a „Mind Mischief”-ben. Ezen a számon az Ableton Live alap reverb pluginja elég erősen szerepel, tehát látszik, hogy még korai fázisaiban volt a szám.</p>
+			<div class="quote-image">
+							<img src="../images/ifyouwantme.jpg" alt="none">
+					</div>
+		</div>
+		<p>• Track 10, „I Want It To Be”:</p>
+		<p>Ez a szám később a „<a href="page14.html">NTHHSFHBAWCC</a>”-ban fel lett használva, mivel egy részen a szintetizátor teljesen megegyezik azzal, ami ebben szerepel. A szövegben a narrátor arról beszél, hogy ő olyan akar lenni, amilyen ő sohasem lehet, alias extroveltált, vagy egyszerűen olyan ember, mint amilyen a lánynak bejön. Ezután megkéri őt, hogy mondja meg neki, mert lehet, hogy „pont erre van szüksége”. Nem tudjuk meg mit mondjon meg, de valószínűleg azt akarja, hogy a lány elutasítsa. Ha ezt megtenné, akkor tovább lephetne, nem lenne rajta ez a nagy nyomás, hogy megváltozzon.</p>
+
+		<p>• Track 11, „Everything Has Changed”:</p>
+		<div class="flex-container">
+			<p>Ez a dal valószinúleg feleségéről, és volt középiskolai szerelméről, Sophie-ról szól. Arról énekel, hogy „mindig oly messze van”, legyen ez fizikai vagy szerelmi távolság. Ezután próbálja magát nyugtatni, hogy „tudom, csak ma van így”, tehát ez a vágyakozás el fog múlni. Majd úgy folyatja, hogy „Miért? Minden megváltozott. Kérlek, minden megváltozott”. Kevin egyetemre ment, középiskola után nem találkozott a lánnyal, majd befutott, Párizsba költözött. Minden megváltozott, de ennek ellenére nem képes elfelejteni. Mikor visszaköltözik Perthbe, újra találkozik a Sophie-val, de ekkor már nem próbál meg megfelelni neki, önmaga marad. Később összejöttek, összeházasodtak (Kevin 150db McDonald’s hamburgert rendelt esküvőjükre) és már úton van második gyermekük.</p>
+			<div class="quote-image">
+							<img src="../images/everythinghas.jpg" alt="none">
+					</div>
+		</div>			
+		<p>• Track 12 „Endors Toi” Demó:</p>
+		<p>Elég antiklimaktikus befejezés, ez egy demó az Endors Toi-ről, dúdolva, akusztikus gitáron. Ez a szám eredetileg az Innerspeaker-re keszűlt, az Innerspeaker Demo albumon szereplő verzió sokkal jobb, mint ez.</p>
+			<div>
+                <audio controls>
+                    <source src="../audio/endorstoi.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>	
+			
+		
+		<p>• Sidetracked Soundtrack:</p>
+			<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4DLQQb9DTPA04RYuHEn1ru?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+		<p>Eredetileg nem szerepelt a demó albumon, de 2023-ban kiadta, mint teljes szám. Kissé betekintést nyerhetünk abba, hogy Kevin hogyan is csinálta ezt az albumot, főként a nyers hangzás, a hosszú instrumentális szekció miatt. Igazán érdekes, repetitív, torzított dobok szerepelnek ezen a számon. Kissé emlékeztet a „Crystallized”-ra a Melody’s Echo Chamber-től. </p>
+			<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6DRVOxGhpY0sGajzDBUAoX?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+		<p>A gitáron nincs túl sok vad effekt, de a riff elég fülbemászó és még egy kis munkával ez a szám beillett volna az albumba. A szövegben a dal énje meglepődik azon, hogy kedvese visszatért hozzá. Tudja, hogy nem bánt elég jól vele, és nem érti miért szánta meg, tért vissza. A narrátor kitárja neki magát, elmondja, hogy nem tud egyedül maradni, függ ettől a kapcsolattól, függ a lány szerelmétől. Azután elmagyarázza, hogy nem tudja mi a néhány- tehát túl sokat vett el a kapcsolatból. Esetleg túlságosan tapadós volt, nem hagyott a lánynak időt a magánéletére. Ezt követően megkéri a szerelmét, hogy idő van, menjen oda hozzá és mondja el neki mit gondol mielőtt beleőrül a gondolataiba. Majd azzal zárja, hogy nyár lehetne, visszaemlékezve egy szabadabb időre, amikor a szerelmen kívül máson nem aggódtak. A szám végén Kevin hangja pszichedelikusan össze van vágva, majd egy dobszólóval végződik. A szám végére egy elég szép, nosztalgikus képet fest fel egy párról, akár egy ausztrál tengerparton, akik az egész nyarat azzal töltik, hogy mélyen szerelmesek egymásba, nem törődve a világ gondjaival.</p>
+
+
+	<div class="navigation-buttons"> 
+			<a href="page15.html">Előző Oldal</a> 
+			<a href="review1.html">Első Oldal</a> 
+		</div> 
+	</div>
+
+
+    <div class="audio-container">
+        <div class="audio-info">
+            <img src="../images/demos1.jpg" alt="Album Cover">
+            <div>
+                <p></strong>Demók</strong></p>
+                <audio controls>
+                    <source src="../audio/demos.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+    </div>
+       
+		
+
+	
+    <div id="tooltip-box" class="tooltip-box"></div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector(".content").style.opacity = 1;
+
+            const tooltipBox = document.getElementById("tooltip-box");
+            document.querySelectorAll(".tooltip-click").forEach(item => {
+                item.addEventListener("click", function (event) {
+                    tooltipBox.textContent = this.getAttribute("data-text");
+                    tooltipBox.style.left = event.pageX + 10 + "px";
+                    tooltipBox.style.top = event.pageY + 10 + "px";
+                    tooltipBox.style.display = "block";
+                    document.addEventListener("click", function hideTooltip(e) {
+                        if (!item.contains(e.target)) {
+                            tooltipBox.style.display = "none";
+                            document.removeEventListener("click", hideTooltip);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

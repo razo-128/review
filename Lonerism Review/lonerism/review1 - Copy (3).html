@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lonerism Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: white;
+            color: black;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 100px;
+            font-size: 1rem;
+        }
+
+        nav {
+            background-color: black;
+            padding: 10px;
+            width: 100%;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            justify-content: center;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .content {
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 1s ease-in;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1, .quote-image, .navigation-buttons {
+            text-align: center;
+        }
+
+        p {
+            text-align: left;
+        }
+
+        .quote-image {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .quote-image img {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .quote-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .tooltip {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            position: relative;
+            color: purple;
+        }
+
+        .tooltip img {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .tooltip:hover img {
+            display: block;
+        }
+
+        .tooltip-click {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            color: purple;
+        }
+
+        .tooltip-box {
+            display: none;
+            position: absolute;
+            background-color: purple;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: normal;
+            font-size: 15px;
+            width: 300px;
+            max-width: 90%;
+            z-index: 1000;
+        }
+
+        .navigation-buttons {
+            margin-top: 20px;
+        }
+
+        .navigation-buttons a {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navigation-buttons a:hover {
+            background-color: purple;
+            color: white;
+        }
+
+        .audio-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .audio-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .audio-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .audio-info img:hover {
+            transform: scale(1.1);
+        }
+
+        audio::-webkit-media-controls-panel {
+            background-color: purple;
+            border-radius: 10px;
+        }
+
+        strong {
+            font-weight: bold !important;
+        }
+
+        .large-paragraph {
+            font-size: 18px;
+            font-weight: bold;
+        }
+			span.italic {
+				font-style: italic;
+		}
+
+        /* Responsive styles */
+			@media (max-width: 600px) {
+				body {
+					font-size: 0.9rem;
+					padding-bottom: 80px; /* Ensures space for audio player */
+				}
+
+				.audio-container {
+					position: fixed;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					background-color: #f3f3f3;
+					padding: 10px;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 10px;
+					box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+				}
+
+				.audio-info {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					flex: 1;
+					min-width: 0;
+				}
+
+				.audio-info img {
+					width: 50px;
+					height: 50px;
+					flex-shrink: 0;
+				}
+
+				.audio-container audio {
+					flex: 2;
+					width: 100%;
+				}
+
+				.navigation-buttons {
+					margin-bottom: 100px; /* Pushes it above audio player */
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+				}
+
+				.tooltip-box {
+					position: absolute;
+					background-color: purple;
+					color: white;
+					padding: 5px 10px;
+					border-radius: 5px;
+					font-size: 14px;
+					width: auto;
+					max-width: 80%; /* Prevents it from going off screen */
+					max-height: 200px; /* Limiting the height */
+					overflow-y: auto; /* Adds a scrollbar if the content overflows */
+					word-wrap: break-word;
+					z-index: 1000;
+					left: 50%;
+					transform: translateX(-50%);
+					bottom: 45px; /* Keeps it a bit above the audio box */
+				}
+
+				/* Prevent tooltip box from overflowing vertically */
+				.tooltip-box p {
+					margin: 0;
+					padding: 0;
+				}
+			}
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../home.html">Home</a></li>
+            <li><a href="review1.html">Lonerism</a></li>
+            <li><a href="../contacts.html">Kapcsolat</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>Lonerism - A magány megzenésítve</h1>
+        <p class="large-paragraph"> A <span class="tooltip-click" data-text="Eredetileg Loner Pop; a mostani cím jelentése az angol 'Loner' főnév (magányos ember/lény) + izmus, magyarul valami olyasmi, hogy 'Magányizmus' ">Lonerism</span> című, 2012-ben megjelent album <span class="tooltip-click" data-text="Született: 1986, Sydney. Ausztrál multi-instrumentalista, Tame Impala frontembere és egyetlen örökös tagja, korábban The Dee Dee Dums, Mink Mussel Creek, Melody's Echo Chamber és Pond együttesek tagja volt.">Kevin Parker</span> önelkényeztető, erősen pop befolyásoltságú, pszichedelikus rock magnum opus-a, amely szinte képes <span class="italic">transzcendálni</span> a hallgatót.</p>
+        
+		<p>A lemez 2010 és 2012 között készült. Már rögtön az előző és egyben első albumuk, az <a class="tooltip" href="https://en.wikipedia.org/wiki/Innerspeaker" target="_blank">Innerspeaker</a> megjelenése után elkezdett rajta dolgozni Kevin. Maga az album elég szabadon volt elkészítve, nagy részét otthoni stúdiójában vagy útközben, hotelekben vette fel.</p>
+        
+		
+        <div class="quote-image">
+            <img src="../images/kevin1.jpg" alt="Kevin Parker in studio">
+            <blockquote>“<span style="color: purple;">„(…) Bárhol tudok hang- és gitárfelvételeket készíteni, szóval a világ minden pontjáról van egy felvétel. Van gitárfelvétel Bécsben, vagy egy hangfelvétel a Szingapúrból Londonba tartó repülőgépen. Otthon van egy stúdióm, így sok minden Perthben készül.</span>”</blockquote>
+        </div>
+        
+		<p>Kevin ezt az időszakot zenei felfedezés, kísérletezgetésként írta le. Új hangokat, tónusokat fedezett fel, és ezekkel együtt egy bizonyos érzelmet tudott átadni a teljes albumon keresztül. Korábbi munkásságukhoz képest viszonylag kevesebb gitárt tartalmaz, és több szintetizátort.
+Jelentősen hatottak rá a pop zenészek, mint Michael Jackson vagy Kylie Minogue (mind a kettő előadó egy-egy számát később feldolgozta), de megmaradtak a korábbi hatások, mint az Air, Beatles, Broadcast, Cream, Dungen, Flaming Lips, illetve Todd Rundgren, sok más közt. 
+Ekkoriban Parker sokat volt Párizsban a volt barátnője, Melody Prochet miatt (akinek ko-producálta a debütáló albumát), igy kétségtelenül megfigyelhető a francia pop hatásása is.<p>
+
+		
+        <p>One of the standout tracks, <a class="tooltip" href="https://genius.com/Tame-impala-elephant-lyrics" target="_blank" data-image="../images/elephant.jpg">"Elephant"
+            <img src="../images/elephant.jpg" alt="Elephant Cover"></a>, brings a heavier, fuzz-driven sound.</p>
+        
+    <div class="audio-container">
+        <div class="audio-info">
+            <img src="../images/album.jpg" alt="Album Cover">
+            <div>
+                <p></strong>Sample Track</strong></p>
+                <audio controls>
+                    <source src="../audio/sample.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+    </div>
+       
+        <div class="navigation-buttons">
+            <a href="page2.html">Következő Oldal</a>
+        </div>
+    </div>
+    
+    <div id="tooltip-box" class="tooltip-box"></div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector(".content").style.opacity = 1;
+
+            const tooltipBox = document.getElementById("tooltip-box");
+            document.querySelectorAll(".tooltip-click").forEach(item => {
+                item.addEventListener("click", function (event) {
+                    tooltipBox.textContent = this.getAttribute("data-text");
+                    tooltipBox.style.left = event.pageX + 10 + "px";
+                    tooltipBox.style.top = event.pageY + 10 + "px";
+                    tooltipBox.style.display = "block";
+                    document.addEventListener("click", function hideTooltip(e) {
+                        if (!item.contains(e.target)) {
+                            tooltipBox.style.display = "none";
+                            document.removeEventListener("click", hideTooltip);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

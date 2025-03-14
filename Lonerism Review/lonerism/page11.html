@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lonerism Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: white;
+            color: black;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 100px;
+            font-size: 1rem;
+        }
+
+        nav {
+            background-color: black;
+            padding: 10px;
+            width: 100%;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            justify-content: center;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+		.content {
+			max-width: 800px;
+			width: 100%;
+			margin: 0 auto; /* Ensure content is centered */
+			padding: 20px;
+			opacity: 0;
+			transition: opacity 1s ease-in;
+			margin-bottom: 120px; /* Prevent content from going under the audio player */
+		}
+		
+        h1, .quote-image, .navigation-buttons {
+            text-align: center;
+        }
+
+        p {
+            text-align: left;
+        }
+
+        .quote-image {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+			 max-width: 600px; /* Adjust the width of the container */
+			margin: 0 auto; /* Center the container */
+        }
+
+        .quote-image img {
+		    width: 100%; /* Makes the image responsive */
+			max-width: 550px; /* Restrict the maximum width */
+			height: auto; /* Maintain aspect ratio */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .quote-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .tooltip {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            position: relative;
+            color: purple;
+        }
+
+        .tooltip img {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .tooltip:hover img {
+            display: block;
+        }
+
+        .tooltip-click {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            color: purple;
+        }
+
+        .tooltip-box {
+            display: none;
+            position: absolute;
+            background-color: purple;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: normal;
+            font-size: 15px;
+            width: 300px;
+            max-width: 90%;
+            z-index: 1000;
+        }
+
+        .navigation-buttons {
+            margin-top: 20px;
+        }
+
+        .navigation-buttons a {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navigation-buttons a:hover {
+            background-color: purple;
+            color: white;
+        }
+
+        .audio-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .audio-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .audio-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .audio-info img:hover {
+            transform: scale(1.1);
+        }
+
+        audio::-webkit-media-controls-panel {
+            background-color: purple;
+            border-radius: 10px;
+        }
+
+        strong {
+            font-weight: bold !important;
+        }
+
+        .large-paragraph {
+            font-size: 18px;
+            font-weight: bold;
+        }
+			span.italic {
+				font-style: italic;
+		}
+		
+		.flex-container {
+			display: flex;
+			align-items: center;
+			gap: 20px; /* Adjust the space between elements */
+			margin-top: 10px;
+		}
+
+		.flex-container img {
+			width: 55%; /* Adjust image size */
+			height: auto;
+			border-radius: 12px;
+		}
+
+        /* Responsive styles */
+			@media (max-width: 600px) {
+				body {
+					font-size: 0.9rem;
+					padding-bottom: 80px; /* Ensures space for audio player */
+				}
+
+				.audio-container {
+					position: fixed;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					background-color: #f3f3f3;
+					padding: 10px;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 10px;
+					box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+				}
+
+				.audio-info {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					flex: 1;
+					min-width: 0;
+				}
+
+				.audio-info img {
+					width: 50px;
+					height: 50px;
+					flex-shrink: 0;
+				}
+
+				.audio-container audio {
+					flex: 2;
+					width: 100%;
+				}
+
+				.navigation-buttons {
+					margin-bottom: 100px; /* Pushes it above audio player */
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+				}
+
+				.tooltip-box {
+					position: absolute;
+					background-color: purple;
+					color: white;
+					padding: 5px 10px;
+					border-radius: 5px;
+					font-size: 14px;
+					width: auto;
+					max-width: 80%; /* Prevents it from going off screen */
+					max-height: 200px; /* Limiting the height */
+					overflow-y: auto; /* Adds a scrollbar if the content overflows */
+					word-wrap: break-word;
+					z-index: 1000;
+					left: 50%;
+					transform: translateX(-50%);
+					bottom: 45px; /* Keeps it a bit above the audio box */
+				}
+
+				/* Prevent tooltip box from overflowing vertically */
+				.tooltip-box p {
+					margin: 0;
+					padding: 0;
+				}
+			}
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../home.html">Home</a></li>
+            <li><a href="review1.html">Lonerism</a></li>
+            <li><a href="../contacts.html">Kapcsolat</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>8. Keep On Lying</h1>
+        <p class="large-paragraph"> „Tovább hazudozom” - még egy szám, ami a szerelemről szól, de ez kicsit homályosabb jelentésében. </p>
+		
+		<p>Többféleképpen lehet értelmezni- mint egy számot, melyben a dal énje fél megmondani a kedvelt lánynak, hogy szereti, nem tud őszinte lenni, inkább hazudozik. Vagy úgy, mint egy összeomló kapcsolatot, ahol az egyik fél inkább tovább késlelteti az elkerülhetetlent, mint hogy megmondja az igazat. <br/>Ez lehet az egyik előző szám, mint például a <a href="page7.html">Mind Mischief</a> vagy a <a href="page10.html">FLWOGB</a> folytatása. Esetleg összejött a lánnyal, de rájön, hogy nem boldog ebben a kapcsolatban, ami csak a hamis személyiségével működik, kénytelen szakítani. <br/> Egyesek szerint valami mélyebb jelentése van- Kevin Parker személyesen a hallgatókhoz beszél, valami szörnyű titka van, de nem tudja elmondani (ez persze egy elég komolytalan gondolat, inkább valami összeesküvés elméletnek hangzik). <br/>Ahány ember, annyi értelmezés- ez a szép a homályos értelmű dalszövegekben.</p>
+				
+        <div class="quote-image">
+            <img src="../images/kevin13.jpg" alt="blank">
+        </div>
+        
+		
+		<p>Mindenesetre, a dal azzal kezdődik, hogy lassan beolvad Kevin hangja és a hangszerek is megjelennek. A narrátor azt mondja, hogy ő csak kis nyomokat hagy, de majd egy nap talán képes lesz elmondani az igazat. Ennek ellenére még sem képes mit tenni, folytatja a hazudozást.</p>
+
+		<p>Ezután a kórus második felében belátja, hogy csak ki kell mondani, mert a „szegény pici szíved már eddig is tudta”, tehát ez már csak a kegyelemdöfés lenne a kapcsolatban (vagy ha az első értelmezést nézzük akkor hiába, hogy a dal énje tudja, hogy a lány is tudja mit érez, fél kimondani neki.) Itt azzal végez, hogy már nem tud mit tenni az, akinek ez a dal szól, a narrátor tovább fog hazudni.</p>
+
+		<p>Kevin fájdalmas éneklése és az egyszerű, de érzelmes akkordmenet növeli a dalban a feszültséget, a hallgatóban is átadják ezt a szorongó érzést.</p>
+
+		<p>Az első versszakban felteszi a kérdést, hogy ha valaha „lelepleződik az álcája”, akkor majd a lány el tudja-e engedni, meg tud-e neki bocsájtani. A narrátor tudja, hogy nem működik a kapcsolat, de már annyi ideje tétlen, hogy nem képes véget vetni a dolognak. Aztán azt mondja, hogy „Van valami, amit tudnod kell, / De a pokolba is, ha valaha megmondom.”, tovább erősítve a dal énjének a konfliktustól való tartózkodását. Egy metaforával folytatja: „Dél volt, most már hosszú az árnyékom.”, tehát a sok töprengés közben elrepült az idő. Már „dél” óta el akarja mondani, hogy vége a kapcsolatnak, de „hosszú az árnyéka”, azaz beesteledett, majd akkor elmondja máskor, folytatva a kínkeserves kört. Ezt követően Kevin egyre erősebben effektelt hangja azt ismétli, hogy „Amint eljutok a dal végére, elmondom neked.”. Ez a sor a dal ironikus szíve, központja. A dal énje a hallgató szemébe- vagyis inkább fülébe- hazudik. A szám sohasem ér véget- ha ismétlésre állítjuk, akkor észrevesszük, hogy ugyanúgy kezdődik és végződik, tehát sem eleje, sem vége nincs. Nem fogja meg törni az ördögi kört, folytatja a kerülgetést amíg bírja.</p>
+	
+		
+		<div class="quote-image">
+            <img src="../images/kevin14.jpg" alt="blank">
+        </div>
+
+	
+		<p><br/>Ezután egy átvezető rész jön, ahol arra énekel a narrátor, hogy az átok újra nyert, és hamarosan ismét egyedül lesz. Itt bebiztosul, hogy hiába jött össze a kapcsolat, hiába tűnt úgy, hogy talán végre jóra fordult az élete, a sorsa az, hogy magányos maradjon. Megmondja a lánynak, hogy „vigyen mindent, amit tud”, de értse meg- sohasem igazi szerelemről volt szó. A dal énje igazából sohasem volt szerelmes, inkább megszállottan rajongott a lány iránt. Lehet, hogy igazából csak a társadalmi nyomás, a magány elkerülése érdekében akart kapcsolatot. A narrátor reflektál, rájön, hogy a szerelem teljesen más dolog, mint amit ő érzett.</p>
+
+		<p><br/>Ezt a feszült néhány sort követve a szám rögtön átvált, egy gitár kezd el egy dallamot játszani. Majd Kevin megmutatja, hogy milyen mesterien tud az ambiancia és a hanghatások segítségével érzelmeket evokálni. A gitár mellett egyre hangosabban jelennek meg beszélő, nevető hangok, egy parti moraja. Tökéletesen előkelti a hallgatóban azt az érzést, hogy ő nem illik ide, itt nincs helye. Lehet, hogy a dal énje ott van a buliban, de igazából nem része. Ott az a sok ember, a nagy hangzavar és ő nem tartozik oda. Olyan sok minden történik körülötte, de ő nem képes részt venni, különállónak érzi magát. Oly közel van, de csak nézni, hallgatni tudja- ez a szám az albumboritó szinte teljes megtestesítése.</p>
+						 <div class="flex-container">
+			
+			<div class="quote-image">
+				<img src="../images/alone.jpg" alt="blank">
+			</div>
+		</div>
+		<p>Ahogy a hangzavar nő, a hangszerek, a repetíció is egyre feszültebbé teszik a hangulatot, tényleg úgy érezzük, hogy egyfajta társadalmi szorongás kerekedik fenn rajtunk és képtelenek vagyunk mit tenni. Mindenki más szórakozik, míg mi csak szenvedünk. Majd a vége fele a gitár egyre torzítottabb lesz, a végén egy nyomasztó, aggodalommal teli gitár szólóval befejezve. A nevetéseket is könyörtelenül tovább haljuk, rengeteg effekttel- tényleg, mint ha megőrülnénk. A végén kissé lenyugszik, majd visszatér a kórus és elhalkulva véget ér a szám- vagyis pont, hogy nem, mert ugyanígy kezdődik. A zenei lezárást, a megnyugvás érzését soha nem kapjuk meg.</p>
+
+		<p>Ez a szám olyan mértékben játszik a hallgató érzelmeivel, mint nem sok más, és képes drogok nélkül hipnotizálni az embert. Emellett a dal jelentését képes átadni zeneileg is.</p>
+
+		<div class="flex-container">
+			<p>Kevin ehhez a számhoz a hanghatások egy bulin vette fel. Körbesétált a szobán egy diktafonnal, felvette a különböző beszélgetéseket, nevetéseket, zajokat. Úgy nyilatkozott, hogy turnézás közben sok partin részt vett, de egyiken sem érezte magát jól. Ekkor realizálódott benne, hogy ez neki soha nem fog menni, ő nem szociális ember.</p>
+
+			<div class="quote-image">
+				<img src="../images/rec1.jpg" alt="blank">
+			</div>
+		</div>
+		
+		<p><br/>Kettő fő szintetizátor van, mindkettő valószínűleg Juno. Emelett van egy tremolo effektes szintetizátor és egy orgona is.</p>
+		<p>A gitár elég komplikált, igazából egy <span class="tooltip-click" data-text="Improvizatív zenélés. A zenészek ilyenkor spontán módon, gyakran előre megírt struktúra nélkül játszanak."><i>"jam"</i> session</span> az egész, de ez segít megadni a bizonytalanság érzését. Sok benne a motívum, a riffek ismétlése és szeretettel használta a torzító effekteket. A fő gitáron a szokásos effektek mellett <a class="tooltip" target="_blank" data-text="Itt egy MXR Carbon Copy." data-image="../images/delay_tape.jpg">delay tape<img src="../images/carbon.jpg"></a> van, a fuzz gitáron egy <a class="tooltip" href="https://en.wikipedia.org/wiki/Fuzz_face" target="_blank" data-image="../images/fuzz1.jpg">Fuzz Face<img src="../images/fuzz1.jpg"></a> pedál is van.</p>
+		<p>Bár a dob nem túl gyors, repetitív, de elég komplikált részek is vannak benne. Rengeteg intrikált, vagy különleges fill van, illetve erősen szinkópált, gyakran rájátszik a többi hangszerre. A dobon a szokásos effektek vannak, de meg van fűszerezve még egy tape delay-el.</p>
+		<p>A basszus ezen a számon semmi különleges, de nem lehet benne hibát találni.</p>
+
+
+
+
+
+
+		
+	<div class="navigation-buttons"> 
+			<a href="page10.html">Előző Oldal</a> 
+			<a href="page12.html">Következő Oldal</a> 
+		</div> 
+	</div>
+	
+       
+    <div class="audio-container">
+        <div class="audio-info">
+			<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/2UYHP0RQqPFvue0Ygs5Amm?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+    </div>
+
+	
+    <div id="tooltip-box" class="tooltip-box"></div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector(".content").style.opacity = 1;
+
+            const tooltipBox = document.getElementById("tooltip-box");
+            document.querySelectorAll(".tooltip-click").forEach(item => {
+                item.addEventListener("click", function (event) {
+                    tooltipBox.textContent = this.getAttribute("data-text");
+                    tooltipBox.style.left = event.pageX + 10 + "px";
+                    tooltipBox.style.top = event.pageY + 10 + "px";
+                    tooltipBox.style.display = "block";
+                    document.addEventListener("click", function hideTooltip(e) {
+                        if (!item.contains(e.target)) {
+                            tooltipBox.style.display = "none";
+                            document.removeEventListener("click", hideTooltip);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lonerism Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: white;
+            color: black;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 100px;
+            font-size: 1rem;
+        }
+
+        nav {
+            background-color: black;
+            padding: 10px;
+            width: 100%;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            justify-content: center;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+		.content {
+			max-width: 800px;
+			width: 100%;
+			margin: 0 auto; /* Ensure content is centered */
+			padding: 20px;
+			opacity: 0;
+			transition: opacity 1s ease-in;
+			margin-bottom: 120px; /* Prevent content from going under the audio player */
+		}
+		
+        h1, .quote-image, .navigation-buttons {
+            text-align: center;
+        }
+
+        p {
+            text-align: left;
+        }
+
+        .quote-image {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+			 max-width: 600px; /* Adjust the width of the container */
+			margin: 0 auto; /* Center the container */
+        }
+
+        .quote-image img {
+		    width: 100%; /* Makes the image responsive */
+			max-width: 550px; /* Restrict the maximum width */
+			height: auto; /* Maintain aspect ratio */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .quote-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .tooltip {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            position: relative;
+            color: purple;
+        }
+
+        .tooltip img {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .tooltip:hover img {
+            display: block;
+        }
+
+        .tooltip-click {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            color: purple;
+        }
+
+        .tooltip-box {
+            display: none;
+            position: absolute;
+            background-color: purple;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: normal;
+            font-size: 15px;
+            width: 300px;
+            max-width: 90%;
+            z-index: 1000;
+        }
+
+        .navigation-buttons {
+            margin-top: 20px;
+        }
+
+        .navigation-buttons a {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navigation-buttons a:hover {
+            background-color: purple;
+            color: white;
+        }
+
+        .audio-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .audio-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .audio-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .audio-info img:hover {
+            transform: scale(1.1);
+        }
+
+        audio::-webkit-media-controls-panel {
+            background-color: purple;
+            border-radius: 10px;
+        }
+
+        strong {
+            font-weight: bold !important;
+        }
+
+        .large-paragraph {
+            font-size: 18px;
+            font-weight: bold;
+        }
+			span.italic {
+				font-style: italic;
+		}
+		.flex-container {
+			display: flex;
+			align-items: center;
+			gap: 20px; /* Adjust the space between elements */
+			margin-top: 10px;
+		}
+
+		.flex-container img {
+			width: 95%; /* Adjust image size */
+			height: auto;
+			border-radius: 12px;
+		}
+
+        /* Responsive styles */
+			@media (max-width: 600px) {
+				body {
+					font-size: 0.9rem;
+					padding-bottom: 80px; /* Ensures space for audio player */
+				}
+
+				.audio-container {
+					position: fixed;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					background-color: #f3f3f3;
+					padding: 10px;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 10px;
+					box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+				}
+
+				.audio-info {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					flex: 1;
+					min-width: 0;
+				}
+
+				.audio-info img {
+					width: 50px;
+					height: 50px;
+					flex-shrink: 0;
+				}
+
+				.audio-container audio {
+					flex: 2;
+					width: 100%;
+				}
+
+				.navigation-buttons {
+					margin-bottom: 100px; /* Pushes it above audio player */
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+				}
+
+				.tooltip-box {
+					position: absolute;
+					background-color: purple;
+					color: white;
+					padding: 5px 10px;
+					border-radius: 5px;
+					font-size: 14px;
+					width: auto;
+					max-width: 80%; /* Prevents it from going off screen */
+					max-height: 200px; /* Limiting the height */
+					overflow-y: auto; /* Adds a scrollbar if the content overflows */
+					word-wrap: break-word;
+					z-index: 1000;
+					left: 50%;
+					transform: translateX(-50%);
+					bottom: 45px; /* Keeps it a bit above the audio box */
+				}
+
+				/* Prevent tooltip box from overflowing vertically */
+				.tooltip-box p {
+					margin: 0;
+					padding: 0;
+				}
+			}
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../home.html">Home</a></li>
+            <li><a href="review1.html">Lonerism</a></li>
+            <li><a href="../contacts.html">Kapcsolat</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>11. Nothing That Has Happened So Far Has Been Anything We Could Control</h1>
+        <p class="large-paragraph">Még egy szám, ahol a dalszöveg már a címben szerepel, és még egy szám mely címet annyi idő kimondani, mint a számot végighallgatni (az utóbbi nem igaz, a szám 6 perces). A dal főként a tehetetlenség, a túlgondolás témáiról szól, kissé hasonlóan az „<a href="page6.html">Apocalypse Dreams</a>”-hez.</p>
+		
+		<p>A dal lassú, hullámos, kórus- és szalageffektes, érzelmes szintetizátorral kezdődik. Nemsokára megjelenik a többi hangszer is, közte az a dob, ami végig szinte majdnem ugyanazt az egyszerű fillt játssza, eléggé hipnotizálóan. A narrátor rögtön a címmel kezdi- „Semmi, ami eddig történt, nem volt olyan, amit irányíthattunk volna”. A dal énje lemondott, nem magát hibáztatja, tudja, hogy minden félre ment az életében. Az is felmerül benne, hogy lehet csak túlgondolja az életet. Könnyebbé tenné a dolgokat, lassan haladna a kapcsolatokban, az életében, ha tudna. Elkezdi magát, a céljait, álmait megkérdőjelezni.</p>
+
+		<p>Az átvezetőben megszólal Kevin akkori barátnője, Melody (itt becenevén Elodie) a dal énjét megpróbálja kitörni ebből a lelkiállapotból. Megkérdezi tőle, hogy mit csinál idekinn, de ez csak egy költői kérdés. A lány tudja, hogy a narrátor túlgondolt mindent. Ahelyett, hogy segítene, meghallgatná, csak arra kéri, hogy jöjjön be, mert „semminek sem kell, hogy legyen jelentősége”, ne gondolkozzon ezen ennyit.</p>
+
+		<div class="quote-image">
+				<img src="../images/melody1.jpg" alt="blank">
+		</div>
+		
+		<p>A második versszakban Kevin hangja lassan, de erősen, effektelve visszajön, kissé mintha kiborulna Elodie-ra. Megkéri a lányt, hogy nézzen rá, ha nem akarja megbántani. Ezután azt mondja a narrátor, hogy „Súlyos csapás, megyek lefelé” tehát Elodie otthagyta, ez volt az utolsó csepp a pohárban, az utolsó segítséget is elvesztette, a saját gondolataival maradt, összeomlott. Ezután azt mondja, hogy már csak el akarja engedni a dolgokat, feladni.</p>
+
+		<p>A versszak második felében megkérdőjelezi, hogy mi a jó, mi a rossz, de nem tud rá válaszolni magának. Ezt követően arról beszél, hogy az eddigi motivációját elvesztette az élethez, már nincs célja. De az élet megy előre, nem lassul le. Ő már frusztrált, fáradt, kimerült- „De szívás tovább futni”. Nem tudja, hogy jó úton van-e az életében, de nincs ideje megállni, segítséget pedig már csak magában talál.</p>
+
+		<p>Ezt követően viszont viszonylag reményteljes fordulatot vesz a szám. Az élete kilátástalanságára, a bánata ellenére úgy gondolja, hogy majd idővel elér egy napot, amikor tisztábban tud gondolkozni. „Egyenlőre sírok, mert nem tudok elaludni”, tehát ez a sok bizonytalanság, ez a sok túlgondolkodás fenntartja este, úgy érzi szétesett az élete és ezért álmatlan, csak sírni tud. Majd azt mondja, hogy ha megpróbál tartani egy jó érzést, azaz van egy kis boldogság az életében, az röpke, gyorsan elszáll. Bár ez negatívnak tűnik, ugyanez igaz a szomorú pillanatokra, hisz azok is elmúlnak, és ezzel nyugtatja magát a dal személyisége. A versszakot azzal fejezi be, hogy lehet, hogy elvesztik a „küzdelmet”, de ez nem az ő döntésük volt. Tehát a narrátor feladja magát a sorsnak, nem tud ellene mit kezdeni. Ez nem egy elkeseredett lemondás, inkább csak elfogadja az élet irányíthatatlanságát.</p>
+
+
+		<div class="quote-image">
+				<img src="../images/kevin16.jpg" alt="blank">
+		</div>
+		
+		<p>Ezután egy lassabb, szintetizátoros rész következik, a dob itt még mindig ugyanazt a patttern-t követi. A szám előrehaladtával megjelenik még egy szintetizátor, ami kicsit buborékosabb és fülről fülre mászik. A phaser effekt erőssége is megnő a számon, majd egy low-pass filterrel olyan, mint ha a víz alá bukna a szám egy kis időre, de újra visszajön. Ez az egész rész egy pszichedelikus csoda, hátborzongatóan átadja a szám érzelmeit, ezt a bizonytalan, kissé reményteli, de ugyanakkor lemondó melankóliát.</p>
+
+		<p>Egyre és egyre több effekt, szintetizátor automatizáció és hanghatást hallhatunk, majd abbamarad és visszatér a kórus, noha a második felében kissé megváltozik. Megjelenik a dal kulcsmondata „Minden ember boldog, addig, amíg a boldogság hirtelen céllá nem válik.”. A boldogság üldözte pont azt semmisiti meg, teszi megtalálhatatlanná, paradoxon módon. Ha hagyjuk, hogy természetesen történjen velünk a boldogság és nem tesszük célunkká, csak akkor lehetünk igazán boldogak.</p>
+		<div class="quote-image">
+				<img src="../images/kevin17.jpg" alt="blank">
+		</div>
+		<p>Az utolsó sora a dalnak egy elég érzelmes, intim betekintést ad maga Kevin életébe és utal a következő számra. Azt mondja, feltételezhetően Elodie-nak, hogy „Itt várok amíg nem hív a doktor, és aztán majd értesítelek”. Ez elég váratlan, de megmagyarázza az egész számot Kevin szemszögéből. A dal ezután szépen lassan elhalkul.</p>
+
+		<p>Apja volt Kevin számára a legnagyobb inspiráció, miatta lett zenész. Sőt, amikor megtudta, hogy a Modular Records leszerződött a Tame Impala-val, akkor az utolsó egyetemi vizsgáját is otthagyta. Mindig is boldoggá akarta tenni apját, azzal, hogy valóra váltja mindkettőjük álmát- sikeres zenész lesz. Sajnos Jerry Parker még az Innerspeaker megjelenése előtt bőrrákban, 1 éves küzdelem után elhunyt. Kevin ezt az időszakot rosszul viselte, elveszettnek érezte magát, elvesztette a motivációját (úgy, mint a dal énje), bizonytalan lett az út, amin elindult, nem volt kire támaszkodnia. Később az Innerspeaker után világhírre tett szert, de ezt sajnos apjának nem mutathatta meg. Innen egészen egyértelművé válik, hogy ez a szám mennyire is személyes- de talán mégsem annyira, mint a következő és egyben utolsó szám az albumon.</p>
+
+		<div class="quote-image">
+				<img src="../images/pedal1.jpg" alt="blank">
+		</div>
+		<p>A dalban több szintetizátor is megjelenik, sok közülük a Kevin által kedvelt Juno-106. Az akkordokat jászó szintetizátor kicsit élesebb, az pedig orgonán a szokásos delay van. A lead szintetizátoron magnószalag effekt van, ami hullámossá teszi, illetve elég erősen kompresszálva is van. Az arpeggiált szintin flanger és phaser effekt van. Itt is bele vannak vezetve a szintetizátorok egy gitár erősítőbe, kicsit koszosabb hangot adva nekik. A számban használ rengeteg reverbe-t, illetve a master track-en van low-pass filter, amivel el tudja érni a víz alatti hatást.</p>
+
+		<p>A fő gitáron hall reverb (valószínűleg <a class="tooltip" href="https://www.ehx.com/products/holy-grail/" target="_blank" data-image="../images/ehx_holy_grail.jpg">EHX Holy Grail <img src="../images/holygrail.jpg" alt="EHX Holy Grail"></a>), tape echo (<a class="tooltip" href="https://www.roland.com/global/products/rc_re-201_space_echo/" target="_blank" data-image="../images/re201_space_echo.jpg">RE-201 Space Echo <img src="../images/spaceecho.jpg" alt="RE-201 Space Echo"></a>), delay (talán MXR Carbon Copy), kórus és a szokásos torzítás van (BD-2 Blues Driver és MXR Dyna Comp), ez is magnószalag effekttel megfűszerezve (itt valószínűleg a Diamond Vibrato töltötte be ezt a szerepet). A szintetizátoros gitáron pitch shift, hall reverb és digitális delay van.</p>
+
+		<p>A dobolás elég egyszerű, ahogy már említettem, nagyrészt ugyanazt az 1-2 pattern-t játsza, mindig ugyanazokkal a fillekkel. Nem kreatív, de igazán elvarázsoló, sőt szinte annyira fülbemászó, mint egy dallam.</p>
+
+		<p>A basszus itt elég érdekes, követi az akkordokat, de egyszerre kissé önálló életet is él. Nem a „<a href="https://www.youtube.com/watch?v=pFptt7Cargc" target="_blank">Let It Happen</a>” basszusa, sőt nem is „Mind Mischief” vagy „FLWOGB”, de elég jól illik a számhoz.</p>
+
+  
+  
+  
+	<div class="navigation-buttons"> 
+			<a href="page13.html">Előző Oldal</a> 
+			<a href="page15.html">Következő Oldal</a> 
+		</div> 
+	</div>
+
+    <div class="audio-container">
+        <div class="audio-info">
+			<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/33JMMgxQKL3zJsZeMNC3gR?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+    </div>
+	
+    <div id="tooltip-box" class="tooltip-box"></div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector(".content").style.opacity = 1;
+
+            const tooltipBox = document.getElementById("tooltip-box");
+            document.querySelectorAll(".tooltip-click").forEach(item => {
+                item.addEventListener("click", function (event) {
+                    tooltipBox.textContent = this.getAttribute("data-text");
+                    tooltipBox.style.left = event.pageX + 10 + "px";
+                    tooltipBox.style.top = event.pageY + 10 + "px";
+                    tooltipBox.style.display = "block";
+                    document.addEventListener("click", function hideTooltip(e) {
+                        if (!item.contains(e.target)) {
+                            tooltipBox.style.display = "none";
+                            document.removeEventListener("click", hideTooltip);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

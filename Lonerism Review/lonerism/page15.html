@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lonerism Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: white;
+            color: black;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 100px;
+            font-size: 1rem;
+        }
+
+        nav {
+            background-color: black;
+            padding: 10px;
+            width: 100%;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            justify-content: center;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+		.content {
+			max-width: 800px;
+			width: 100%;
+			margin: 0 auto; /* Ensure content is centered */
+			padding: 20px;
+			opacity: 0;
+			transition: opacity 1s ease-in;
+			margin-bottom: 120px; /* Prevent content from going under the audio player */
+		}
+		
+        h1, .quote-image, .navigation-buttons {
+            text-align: center;
+        }
+
+        p {
+            text-align: left;
+        }
+
+        .quote-image {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+			 max-width: 600px; /* Adjust the width of the container */
+			margin: 0 auto; /* Center the container */
+        }
+
+        .quote-image img {
+		    width: 100%; /* Makes the image responsive */
+			max-width: 550px; /* Restrict the maximum width */
+			height: auto; /* Maintain aspect ratio */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .quote-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .tooltip {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            position: relative;
+            color: purple;
+        }
+
+        .tooltip img {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .tooltip:hover img {
+            display: block;
+        }
+
+        .tooltip-click {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            color: purple;
+        }
+
+        .tooltip-box {
+            display: none;
+            position: absolute;
+            background-color: purple;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: normal;
+            font-size: 15px;
+            width: 300px;
+            max-width: 90%;
+            z-index: 1000;
+        }
+
+        .navigation-buttons {
+            margin-top: 20px;
+        }
+
+        .navigation-buttons a {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navigation-buttons a:hover {
+            background-color: purple;
+            color: white;
+        }
+
+        .audio-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .audio-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .audio-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .audio-info img:hover {
+            transform: scale(1.1);
+        }
+
+        audio::-webkit-media-controls-panel {
+            background-color: purple;
+            border-radius: 10px;
+        }
+
+        strong {
+            font-weight: bold !important;
+        }
+
+        .large-paragraph {
+            font-size: 18px;
+            font-weight: bold;
+        }
+			span.italic {
+				font-style: italic;
+		}
+		
+		.flex-container {
+			display: flex;
+			align-items: center;
+			gap: 20px; /* Adjust the space between elements */
+			margin-top: 10px;
+		}
+
+		.flex-container img {
+			width: 95%; /* Adjust image size */
+			height: auto;
+			border-radius: 12px;
+		}
+
+        /* Responsive styles */
+			@media (max-width: 600px) {
+				body {
+					font-size: 0.9rem;
+					padding-bottom: 80px; /* Ensures space for audio player */
+				}
+
+				.audio-container {
+					position: fixed;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					background-color: #f3f3f3;
+					padding: 10px;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 10px;
+					box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+				}
+
+				.audio-info {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					flex: 1;
+					min-width: 0;
+				}
+
+				.audio-info img {
+					width: 50px;
+					height: 50px;
+					flex-shrink: 0;
+				}
+
+				.audio-container audio {
+					flex: 2;
+					width: 100%;
+				}
+
+				.navigation-buttons {
+					margin-bottom: 100px; /* Pushes it above audio player */
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+				}
+
+				.tooltip-box {
+					position: absolute;
+					background-color: purple;
+					color: white;
+					padding: 5px 10px;
+					border-radius: 5px;
+					font-size: 14px;
+					width: auto;
+					max-width: 80%; /* Prevents it from going off screen */
+					max-height: 200px; /* Limiting the height */
+					overflow-y: auto; /* Adds a scrollbar if the content overflows */
+					word-wrap: break-word;
+					z-index: 1000;
+					left: 50%;
+					transform: translateX(-50%);
+					bottom: 45px; /* Keeps it a bit above the audio box */
+				}
+
+				/* Prevent tooltip box from overflowing vertically */
+				.tooltip-box p {
+					margin: 0;
+					padding: 0;
+				}
+			}
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../home.html">Home</a></li>
+            <li><a href="review1.html">Lonerism</a></li>
+            <li><a href="../contacts.html">Kapcsolat</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>12. Sun's Coming Up</h1>
+        <p class="large-paragraph">Témájában valószínűleg a legnyomasztóbb szám az albumon. Azok az érzelmek, amiket képes átadni ez a szám, csak úgy élhetők át, ha egyszer elmélyedve végighallgatjuk.</p>
+			
+		<p>A Kevin könnyek szélén álló, az album többi számához képest mély, meghitt éneklése, a fájdalmas zongora, a környezet ambianciája, a gitár szóló- mind egy mélyen emocionális számot alkotnak. A címe nem túl árulkodó, „Nap felkel”. Parker már korábban is írt a napról, és szerette korai számaiban említeni a természetet és az univerzumot. Egyszerűen van valami megmagyarázhatatlanul poignáns, de egyben ominózus életérzés maga cím mögött. A dal persze Kevin apjáról íródott és nagyon személyes, így nem csoda, hogy az album utolsó száma. Emellett <a href="https://www.youtube.com/watch?v=Vfq3l153UfU" target="_blank">élőben először</a> csak a Lonerism 10. évfordulóján volt képes eljátszani. <br/> Személyes témája ellenére mindenki tud belőle meríteni, hasonlóságot lelni benne a saját életére. Átadja azt a magányosságot, elveszettséget, melyet egy ember érez egy általa szerettet személy elvesztése után.</p>
+
+		<p>Az album énjének szemszögéből ez volt a legeslegutolsó csepp a pohárban. Elvesztette utolsó bizalmasát, teljesen egyedül maradt, lelkileg összetört. Ez egy tökéletes vég a lemeznek, a többi számhoz képest, a sok érzelmi zűrzavar után, itt már nincs túl sok hangszer, az album énje még utoljára, őszintén ki tudja önteni lelki bánatát. Érzelmileg üres lett, az élet nem tud tovább szórakozni vele, apatikussá, közönyössé vált.</p>
+
+		<p>A szám egy ¾-es ütemben írt, érzelmes zongorával indul. Hamarosan megjelenik Kevin szokatlanul mély, fájdalmas hangja, amin reverb és echo effect van. Az első versszakban az élet mulandóságán reflektál. </p>
+
+		<div class="quote-image">
+            <img src="../images/suns1.jpg" alt="blank">
+            <blockquote><span style="color: purple;">„Mindaz, amiről azt hittem, hogy soha nem múlik el, <br> Csak a gondolat is, hogy már csak emlékek, megőrjít.”</span></blockquote>
+        </div>
+        
+
+		<p>Tehát minden, amit Kevin természetesnek vett, nem értékelt meg eléggé, az most hirtelen eltűnt, és képtelen feldolgozni, hogy már csak emlékek maradtak. Azaz míg élt apja, nem tűntek fontosnak a vele töltött pillanatok, de miután már csak az emlékek maradtak, rájön, hogy nem becsülte meg eléggé.</p>
+		<p><br/>Azzal folytatja, hogy látja egy nő, valószínűleg az anyja repülőgépét, ahogy ingadozik a levegőben, majd landol. A repülőgép ingadozása egyfajta metafora lehet az érzelmi bizonytalanságra, amit érez. Valószínűleg rossz hírekkel érkezik az anyja, ezért is mondja a következő sorban, hogy „Ott, az övében, más kezeiben lóg a világom”. Az élete egy limbóban ragadt, minden attól függ, hogy milyen fejleményt kap. Kevin a legrosszabbat várja, viszont a gyász első szakasza a megtagadás- még van benne egy cseppnyi remény, hogy az apja nem halt meg, jó híreket fog kapni.</p>
+		<div class="flex-container">
+		 <p>Itt megjegyezném, hogy Kevin korábban már a „Runway, Houses, City, Clouds”-ban említette a repülést, és ez a két dal így kicsit összekötődik. Itt arról énekelt, hogy elhagyja otthonát és a fáj ez a változás. Ahogy felszáll a gép, realizálódik benne, hogy akiket elhagy, mennyit is jelentenek a számára.</p>
+		<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3iohh4bLsUKefmjHw5jhbq?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>	
+		</div>			
+			
+		<p>A versszak második felében még utoljára tehetetlenségében bocsánatot kér apjától magában. Nem volt mindig a legfényesebb a kapcsolatuk, de elnézést kér, ha valami rosszat tett valaha is, és ezért az apja esetleg már nem szerette, csalódott lett volna benne. Ha az utóbbi igaz, akkor Kevin azt kéri, hogy halálos ágyán csak úgy gondoljon rá, mint valakire, akit ismert. Tehát arra kéri, ne olyan fia ként emlékezzen rá, mint aki megbántotta, hanem inkább csak úgy, mint egy jött-ment akárkire. Próbálja magát eltávolítani Kevin az apa-fiú kapcsolatból, de legmélyen itt magának próbálja megkönnyíteni a helyzetet. Érzi, hogy az apja valószínűleg úgy sem haragszik rá és a végsőkig szerette, de ez a gondolat csak nehezebbé tenné a veszteséget, így önként megpróbálja magát eltávolítani.</p>
+		
+		<div class="flex-container">
+			<p>Később írt még egy számot 2020-as albumán apjáról, ami várható volt, mivel ez az album az élet és annak múlásáról szól. A szám a „Posthumous Forgiveness”, magyarul a posztumusz megbocsájtás. Itt nem csak újból bocsánatot kér, hanem apjának is megbocsájt. Mire képes megérteni apját, ő már nem tudja neki megmagyarázni tetteit. Kevin tudta, hogy ha meg akar neki bocsájtani, az egy egyoldalú beszélgetés lesz. Annak ellenére, amit az apja vétett ellene és testvére ellen, mégis hiányzik neki, mesélni szeretne neki életéről, karrierjéről. Ebben a számban egyfajta költői öntudat is megjelenik, Kevin (helyesen) azt gondolja, hogy apja büszke lenne zenei eredményeire.</p>
+			<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1KcOU0q9AMXV9xi4tSzzCc?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+		</div>
+		
+		<p>A versszak végére újra visszatér a szorongással, a fájdalmas várakozással telített valóságba. Azt mondja, ha nem hall egyhamar semmiféle hírt, akkor teljesen „kikapcsol” (ergó mentálisan tönkremegy), megnézi, hogyan fog kisülni. Tehát ha tovább váratják, akkor már feladja, hogy egyáltalán érzelmileg megpróbálja feldolgozni.</p>
+
+		<div class="quote-image">
+            <img src="../images/suns2.jpg" alt="blank">
+        </div>
+		
+		<p><br/>A kórusban megváltozik az éneklés dallama, amely eddig kicsit inkább szavalásra hajazott, illetve a zongora is feszültebb lesz. Kevin úgy kezdi, hogy sohasem volt igazán merész, nem egy kalandor ember. Ez egy elég fura sor, talán a legfurább a dalban. Jelentésében valószínűleg arra gondol, hogy nem használta ki a lehetőségeit, hogy apjával legyen, vagy esetleg nem volt elég bátor megmondani neki, mennyire is szereti igazán és már túl késő. Emellett arra is gondolhat, hogy nem használta ki lehetőségeit, nem adta bele mindenét, hogy apját büszkévé tehesse, de erre már nem lesz esély.</p>
+
+		<p>Ezt követően felhívja „kedvesét”, azt a lányt, akivel két számmal ezelőtt eléggé tönkre ment a kapcsolata és akit nem is igazán szeret, mind az kiderült a „Keep On Lying”-ból. Persze a lány nem válaszol, és ez csak ront Kevin mentális állapotán. Egyedül maradt, elhagyatottnak érzi magát, nincs kibe támaszkodnia.</p>
+
+		<p>A következő sornak nincs sok jelentése: „7 óra van; Doverben éjfél”. Valószínű, hogy csak azért Dover-t használta, mert ez rímelt az „over” -re. De az is elképzelhető, hogy Doverben még éjfél volt, de ő hazajött apjához Perth-be, és itt már 7 óra van.<br/> Mindenesetre az ezt következő sorban azt mondja, hogy a „nap felkelt, hát vége van”. Bár a napfelkelte általában egy pozitív képet fest, itt nem így van. Még nem állt készen, de egy új nap jött el, egy új fejezet nyílt az életében. Nem tud mit csinálni, mint elfogadni és nézni a napfelkeltét, azaz csak engedi, hogy történjenek a dolgok. Valahol legbelül érzi, hogy apja meghalt, ha a hír még nem is jutott el hozzá. A „hát vége van” egyfajta keserű elfogadást mutat, nem tud a sorssal szembe menni.</p>
+
+		<p><br/>A kórus második felében arról beszél, hogy apja gitárját játssza, miközben ő haldoklik a rákban. Kevin próbál ragaszkodni ahhoz, amivel kettőjüket összekötötte, ezzel próbálja gyászát könnyíteni. Az apja haldoklik, de ő képtelen feldolgozni ezt és inkább a zenével tereli el a figyelmét, próbál visszaemlékezni a szép pillanatokra, mint mikor gyerek volt és apja gitározott neki. Kevin ezután utoljára még felhívja őt, de választ már nem kap. Felteszi a költői kérdést „Apa, miért nem válaszolsz?”, de ő is tudja a választ. Ezután megismétli, hogy felkel a nap és véget ért minden.</p>
+
+		<p>A teljes kórus rész rettenetes bánattal tölti el még a hallgatót is, de amikor utoljára kimondja Kevin, hogy „vége van”, az ember garantáltan libabőrös lesz. Az a mély, nyomós magányosság és az a szenvedő fájdalom, amit átad ez a dal egyszerűen megfoghatatlan. Többször is lehet a dalban hallani, hogy Kevin hangja megreked, és ez keverve a zenei bánattal, feszültséggel, kihozza az emberből az érzelmeket.</p>
+
+
+		<p><br/>Ezután rögtön abbamarad mind Kevin hangja, mind a zongora és vissza sem jönnek, hagyja a szám elgondolkozni a hallgatót. Az ezt követő részt legjobban úgy lehet leírni, mint tiszta, keserű és nosztalgikus búbánat. Megjelenik egy erősen effektelt gitár, mely innentől végig szólózik. Majd Kevin megint előhozza az ambianca eszközét. A szél fúvásának a hangját és lépteket hallunk (ezek a lépések megjelentek a „Be Above It”-ban is, így az album végében és elejében is van hasonlóság). Ezeket a hangokat Kevin a tengerparton sétálva vette fel. Itt gondolhatunk, arra, hogy Kevin próbálja átélni az apjával szerzett emlékeit, próbál nosztalgiázni azáltal, hogy bejárja a kedvenc helyeiket. De már nem ugyanolyan, inkább csak magányos szenvedés az egész. A gitár fájdalmas dallama, annak repetíciója eközben mesterien alátámasztja ezeket az érzelmeket.</p>
+		<div class="flex-container">
+			<p>Ahogy Kevin közeledik a tengerparthoz, halljuk a hullámokat, a tenger morajlását. A végén már szinte mást nem is lehet, csak is a víz csöndes csapkodását. Körbe van véve annyi mindennel, de egyedül van, már senkije nem maradt. Majd egyszer csak megjelenik egy gyermek és egy felnőtt férfi hangja, ezután a felvételt sietve lekapcsolja, 3 másodperc csönd és vége mind a számnak, mind a lemeznek.</p>
+			
+			<div class="quote-image">
+				<img src="../images/suns3.jpg" alt="blank">
+			</div>
+		</div>
+		<div class="quote-image">
+				<img src="../images/jerry1.jpg" alt="blank">
+		</div>
+		<p>Kevin a kisgyerekben és annak apjában magát és saját apját látta meg. Majd kissé, mint a tenger, az érzelmek és emlékek elárasztották őt. A gyermekkor ártatlansága, az önfeledt, boldog emlékek szembeszállnak a keserves, bús jelennel. Ez a keserédes nosztalgia csodálatos lezárása az albumnak. A végére a magányban ragadt és kilátástalan lett az élete, már csak a múltjában keresheti a boldogságot.</p>
+
+		<div>
+		</div>
+		<p><br/>A számban nem sok hangszer van, de egyikük az álomszerű, hullámzó gitár. Ezen a gitáron egy magas rátájú EHX Small Stone phaser, RE-201 space echo, egy erős delay, erős <a class="tooltip" href="https://www.ehx.com/products/pulsar" target="_blank" data-image="../images/ehx_pulsar.jpg">EHX Pulsar <img src="../images/pulsar.jpg" alt="EHX Pulsar"></a> tremolo, illetve egy <a class="tooltip" href="https://www.boss.info/global/products/gt-6/" target="_blank" data-image="../images/gt6.jpg">Boss GT-6 <img src="../images/boss_gt6.jpg" alt="Boss GT-6"></a> effekt processzor van; ez természetesen mind a szokásos torzitópedálok mellett. A gitár dallama és a gitárszóló eredetileg a „Desire Be, Desire Go” egyik demo- illetve élőben előadott verzióján szólalt meg először, itt újból felhasználta.</p>
+
+		<p>A dal zongorája mind tempóban mind az akkordmenetben nagyon hasonlít a <a class="tooltip" href="https://en.wikipedia.org/wiki/The_Zombies" target="_blank" data-image="../images/zombies.jpg">The Zombies <img src="../images/zombies.jpg" alt="The Zombies"></a> „<a class="tooltip" href="https://www.youtube.com/watch?v=gs-bVMs1LKU" target="_blank" data-image="../images/rose.jpg">A Rose for Emily <img src="../images/rose.jpg" alt="A Rose for Emily"></a>” zongorájára, ami pedig a <a class="tooltip" href="https://en.wikipedia.org/wiki/The_Beatles" target="_blank" data-image="../images/beatles.jpg">The Beatles<img src="../images/beatles.jpg" alt="The Beatles"></a> „Eleanor Rigby” és mégjobban a „<a class="tooltip" href="https://www.youtube.com/watch?v=ELlLIwhvknk" target="_blank" data-image="../images/forno.jpg">For No One <img src="../images/forno.jpg" alt="For No One"></a>”-ból inspirálódott. Mind három számhoz hasonló, kissé <a class="tooltip" href="https://en.wikipedia.org/wiki/Baroque_pop" target="_blank">barokk-poppos</a> a zongorajátszás. Ezt lehet lopásnak nézni, de Kevin apja egy óriási Beatles rajongó volt és ez valószínűleg csak egy aranyos utalás- „Nézd apa, én is tudok ilyet!”.</p>
+	
+		<div>
+		</div>
+		<p><br/>Kevin karrierje apja nélkül nem létezne. Amikor kisgyerek volt és apjánál tartózkodott, akkor az ő hangszereivel játszadozott, és Michael Jackson által inspirált dalokat írt már 7 évesen, 11 évesen pedig dobolni kezdett. Apja zenekara gyakran a garázsban levő otthoni stúdióban gyakorolt, majd Kevin 12 évesen saját számait is felvette ott egy kétsávos magnón. Kevin anyja elköltözött, így nem folytathatta a dobolást – ehelyett apja gitározni tanította. Jerry a lead-et, Kevin a ritmus gitárt játszotta. Később az internetről töltötte le gitár tabulatúrákat, kedvenc számait bontotta le és elemezte. Kevin később eltávolodott apjától, tinédzserként vandalizmusba, kisebb bűncselekményekbe, drogokba öntötte dühét. Mindezek ellenére tagadhatatlan, hogy apja befolyása miatt szerette meg, majd kezdte el játszani azt a fajta zenét, amely miatt később híressé vált.</p>
+		<p>Kevin 2020-ban megosztott Instagram profilján egy számot, melyet apja énekelt és játszott. Jerry hangja szinte ugyanolyan, mint Keviné, mindkettő pedig John Lennon-éra hajaz. Ezt még John Lennon fia, Sean Lennon is megerősítette. Ennek ellenére Kevin szerényen azt mondta, hogy ő sohasem hallotta a hasonlóságot.</p>
+		<div class="quote-image">
+			<video width="640" height="360" controls>
+			  <source src="../images/jerry2.mp4" type="video/mp4">
+			  Your browser does not support the video tag.
+			</video>
+		</div>
+		
+
+
+        
+	<div class="navigation-buttons"> 
+			<a href="page14.html">Előző Oldal</a> 
+			<a href="page16.html">Következő Oldal</a> 
+		</div> 
+	</div>
+	
+    <div class="audio-container">
+        <div class="audio-info">
+			<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7Jk2pg4g0c5rz5AfkEGMRp?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+    </div>
+       
+
+
+	
+    <div id="tooltip-box" class="tooltip-box"></div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector(".content").style.opacity = 1;
+
+            const tooltipBox = document.getElementById("tooltip-box");
+            document.querySelectorAll(".tooltip-click").forEach(item => {
+                item.addEventListener("click", function (event) {
+                    tooltipBox.textContent = this.getAttribute("data-text");
+                    tooltipBox.style.left = event.pageX + 10 + "px";
+                    tooltipBox.style.top = event.pageY + 10 + "px";
+                    tooltipBox.style.display = "block";
+                    document.addEventListener("click", function hideTooltip(e) {
+                        if (!item.contains(e.target)) {
+                            tooltipBox.style.display = "none";
+                            document.removeEventListener("click", hideTooltip);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

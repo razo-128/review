@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lonerism Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: white;
+            color: black;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 100px;
+            font-size: 1rem;
+        }
+
+        nav {
+            background-color: black;
+            padding: 10px;
+            width: 100%;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            justify-content: center;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+		.content {
+			max-width: 800px;
+			width: 100%;
+			margin: 0 auto; /* Ensure content is centered */
+			padding: 20px;
+			opacity: 0;
+			transition: opacity 1s ease-in;
+			margin-bottom: 120px; /* Prevent content from going under the audio player */
+		}
+		
+        h1, .quote-image, .navigation-buttons {
+            text-align: center;
+        }
+
+        p {
+            text-align: left;
+        }
+
+        .quote-image {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+			 max-width: 600px; /* Adjust the width of the container */
+			margin: 0 auto; /* Center the container */
+        }
+
+        .quote-image img {
+		    width: 100%; /* Makes the image responsive */
+			max-width: 550px; /* Restrict the maximum width */
+			height: auto; /* Maintain aspect ratio */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .quote-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .tooltip {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            position: relative;
+            color: purple;
+        }
+
+        .tooltip img {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .tooltip:hover img {
+            display: block;
+        }
+
+        .tooltip-click {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            color: purple;
+        }
+
+        .tooltip-box {
+            display: none;
+            position: absolute;
+            background-color: purple;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: normal;
+            font-size: 15px;
+            width: 300px;
+            max-width: 90%;
+            z-index: 1000;
+        }
+
+        .navigation-buttons {
+            margin-top: 20px;
+        }
+
+        .navigation-buttons a {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navigation-buttons a:hover {
+            background-color: purple;
+            color: white;
+        }
+
+        .audio-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .audio-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .audio-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .audio-info img:hover {
+            transform: scale(1.1);
+        }
+
+        audio::-webkit-media-controls-panel {
+            background-color: purple;
+            border-radius: 10px;
+        }
+
+        strong {
+            font-weight: bold !important;
+        }
+
+        .large-paragraph {
+            font-size: 18px;
+            font-weight: bold;
+        }
+			span.italic {
+				font-style: italic;
+		}
+		
+		.flex-container {
+			display: flex;
+			align-items: center;
+			gap: 20px; /* Adjust the space between elements */
+			margin-top: 10px;
+		}
+
+		.flex-container img {
+			width: 55%; /* Adjust image size */
+			height: auto;
+			border-radius: 12px;
+		}
+
+        /* Responsive styles */
+			@media (max-width: 600px) {
+				body {
+					font-size: 0.9rem;
+					padding-bottom: 80px; /* Ensures space for audio player */
+				}
+
+				.audio-container {
+					position: fixed;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					background-color: #f3f3f3;
+					padding: 10px;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 10px;
+					box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+				}
+
+				.audio-info {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					flex: 1;
+					min-width: 0;
+				}
+
+				.audio-info img {
+					width: 50px;
+					height: 50px;
+					flex-shrink: 0;
+				}
+
+				.audio-container audio {
+					flex: 2;
+					width: 100%;
+				}
+
+				.navigation-buttons {
+					margin-bottom: 100px; /* Pushes it above audio player */
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+				}
+
+				.tooltip-box {
+					position: absolute;
+					background-color: purple;
+					color: white;
+					padding: 5px 10px;
+					border-radius: 5px;
+					font-size: 14px;
+					width: auto;
+					max-width: 80%; /* Prevents it from going off screen */
+					max-height: 200px; /* Limiting the height */
+					overflow-y: auto; /* Adds a scrollbar if the content overflows */
+					word-wrap: break-word;
+					z-index: 1000;
+					left: 50%;
+					transform: translateX(-50%);
+					bottom: 45px; /* Keeps it a bit above the audio box */
+				}
+
+				/* Prevent tooltip box from overflowing vertically */
+				.tooltip-box p {
+					margin: 0;
+					padding: 0;
+				}
+			}
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../home.html">Home</a></li>
+            <li><a href="review1.html">Lonerism</a></li>
+            <li><a href="../contacts.html">Kapcsolat</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>Téma</h1>
+        <p class="large-paragraph"> Az album témája főkent az <i>izoláltság</i>, a magány életérzése.</p>
+        
+		<p>Ezt analóg szintetizátorokkal, nosztalgikus hanghatásokkal, ambiancával adja át a hallgatónak Kevin. Témában viszonylag hasonló az előző albumhoz, de úgy érezhetjük, hogy egy visszalépés. <br/> Az Innerspeaker személye a magányról, mint erény, pozitívum beszélt. Nem kívánta mások közelségét, úgy érezte, hogy igazán csak egyedül tud kibontakozni. A magány szabadságáról, a gondtalan időtöltésről, a felelősségmentességről énekelt. </p>
+        <div class="flex-container">
+			
+			<div class="quote-image">
+				<img src="../images/synth.jpg" alt="Solitude Quote">
+			</div>
+		</div>
+		<p>Erre erős példa a „Solitude is Bliss”, ami azt mutatja be, hogy a dal énje nem tud azonosulni az extrovertált emberekkel, számára ez viszont nem probléma. Őt nem érdekli a társadalom nyomása, boldogságot talált az egyedüllétben és ez neki tökéletes. Úgy véli, hogy mások nem fogják megérteni ő mit érez, és majd csak irigylik az ő felsőbbrendűnek vélt „szabadságát”.</p>
+		<div class="flex-container">
+			<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/2a2MbiJN2skOxohykOVcss?utm_source=generator" width="60%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+			
+			<div class="quote-image">
+				<img src="../images/solitude.jpg" alt="solitude">
+			</div>
+		</div>
+		
+		<p>Jó példa még az „It Is Not Meant To Be”, ahol például belátja, hogy a lány, akit szeret, nem viszonozná a szerelmét az életvitele, életmódja miatt (egész napos semmittevés, füvezés); inkább csak barátként tekint rá. A lappangó érzelmek ellenére a dal személye megelégszik azzal is, ha csak láthatja a lányt.</p>
+		<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3Yub3anoLj8w58TVpEXUJv?utm_source=generator" width="60%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+
+		<p>Továbbá az „Alter Ego” -ban felmond egy más, hamis, kifele mutató személyiség, a <i><a class="tooltip" href="https://hu.wikipedia.org/wiki/Honne_%C3%A9s_tatemae" target="_blank" data-image="../images/tatemae.jpg">tatemae</a></i> fenntartásával. Inkább a saját énjét mutatja a világ felé.</p>
+		<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6SmV1Oo24nCZBPzIYkL4HZ?utm_source=generator" width="60%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+		
+		<p>Ez a pozitívan <span class="tooltip-click" data-text="Nhilizmus: Az emberiség által létrehozott társadalmi értékek (társadalmi törvény, elv, erkölcsi norma) tagadása, ill. az a haladásellenes világnézet, amely a lét értelmetlenségét, a cselekvés hiábavalóságát hirdeti; teljes szkepticizmus. ">nihilisztikus </span>  (vagy akár abszurdista), de egyben <i>carpe diem</i> hozzáállású „semmi sem számít, engedjük a dolgokat történni” filozófia, egyedüllétbe való belenyugvás teljesen ellentmegy a Lonerism fájdalmas, vágyakozó magányának. Itt inkább sóvárog az emberi- és párkapcsolatok után és kirekesztettnek érzi magát, de képtelen beilleszkedni. <br/> Lényegében az Innerspeaker a boldog introvertáltat, míg a Lonerism a magányos introvertált perszonáját festi fel. Mindezek ellenére a Lonerism többnyire más emberekről, az emberek közötti létről és a társadalomban való hely megtalálásáról szól. Az album végére belenyugszik abba, hogy sohasem lesz belőle igazán extrovertált ember és kár ezt az ábrándot üldözni.</p>
+        
+		<p>Kevin Parker <a class="tooltip" href="https://cosmicmagazine.com.au/features/tame-impala-the-story-so-far/#:~:text=As%20with%20many%20children
+" target="_blank">családi állapota nem volt a legtökéletesebb</a>: szülei már 3 éves korában elváltak. Egy interjúban megemlítette, hogy tinédzserként teljesen magányosnak érezte magát, „nem volt senkije”. Azt mondta, hogy később ebben az albumban próbálta átadni ezeket az érzelmeket- egy fura mögöttes reménnyel a dalokban.</p>
+		
+		<div class="quote-image">
+            <img src="../images/kevin2.jpg" alt="Kevin Parker in studio">
+            <blockquote><span style="color: purple;">Kevin stúdiójában</span></blockquote>
+        </div>
+        
+	<div class="navigation-buttons"> 
+			<a href="review1.html">Előző Oldal</a> 
+			<a href="page3.html">Következő Oldal</a> 
+		</div> 
+	</div>
+	
+	 <div class="audio-container">
+        <div class="audio-info">
+            </div>
+        </div>
+    </div>
+       
+
+
+	
+    <div id="tooltip-box" class="tooltip-box"></div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector(".content").style.opacity = 1;
+
+            const tooltipBox = document.getElementById("tooltip-box");
+            document.querySelectorAll(".tooltip-click").forEach(item => {
+                item.addEventListener("click", function (event) {
+                    tooltipBox.textContent = this.getAttribute("data-text");
+                    tooltipBox.style.left = event.pageX + 10 + "px";
+                    tooltipBox.style.top = event.pageY + 10 + "px";
+                    tooltipBox.style.display = "block";
+                    document.addEventListener("click", function hideTooltip(e) {
+                        if (!item.contains(e.target)) {
+                            tooltipBox.style.display = "none";
+                            document.removeEventListener("click", hideTooltip);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

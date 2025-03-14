@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lonerism Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: white;
+            color: black;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 100px;
+            font-size: 1rem;
+        }
+
+        nav {
+            background-color: black;
+            padding: 10px;
+            width: 100%;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            justify-content: center;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+		.content {
+			max-width: 800px;
+			width: 100%;
+			margin: 0 auto; /* Ensure content is centered */
+			padding: 20px;
+			opacity: 0;
+			transition: opacity 1s ease-in;
+			margin-bottom: 120px; /* Prevent content from going under the audio player */
+		}
+		
+        h1, .quote-image, .navigation-buttons {
+            text-align: center;
+        }
+
+        p {
+            text-align: left;
+        }
+
+        .quote-image {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+			 max-width: 600px; /* Adjust the width of the container */
+			margin: 0 auto; /* Center the container */
+        }
+
+        .quote-image img {
+		    width: 100%; /* Makes the image responsive */
+			max-width: 550px; /* Restrict the maximum width */
+			height: auto; /* Maintain aspect ratio */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .quote-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .tooltip {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            position: relative;
+            color: purple;
+        }
+
+        .tooltip img {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .tooltip:hover img {
+            display: block;
+        }
+
+        .tooltip-click {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            color: purple;
+        }
+
+        .tooltip-box {
+            display: none;
+            position: absolute;
+            background-color: purple;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: normal;
+            font-size: 15px;
+            width: 300px;
+            max-width: 90%;
+            z-index: 1000;
+        }
+
+        .navigation-buttons {
+            margin-top: 20px;
+        }
+
+        .navigation-buttons a {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navigation-buttons a:hover {
+            background-color: purple;
+            color: white;
+        }
+
+        .audio-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .audio-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .audio-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .audio-info img:hover {
+            transform: scale(1.1);
+        }
+
+        audio::-webkit-media-controls-panel {
+            background-color: purple;
+            border-radius: 10px;
+        }
+
+        strong {
+            font-weight: bold !important;
+        }
+
+        .large-paragraph {
+            font-size: 18px;
+            font-weight: bold;
+        }
+			span.italic {
+				font-style: italic;
+		}
+		
+		.flex-container {
+			display: flex;
+			align-items: center;
+			gap: 20px; /* Adjust the space between elements */
+			margin-top: 10px;
+		}
+
+		.flex-container img {
+			width: 55%; /* Adjust image size */
+			height: auto;
+			border-radius: 12px;
+		}
+
+        /* Responsive styles */
+			@media (max-width: 600px) {
+				body {
+					font-size: 0.9rem;
+					padding-bottom: 80px; /* Ensures space for audio player */
+				}
+
+				.audio-container {
+					position: fixed;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					background-color: #f3f3f3;
+					padding: 10px;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 10px;
+					box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+				}
+
+				.audio-info {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					flex: 1;
+					min-width: 0;
+				}
+
+				.audio-info img {
+					width: 50px;
+					height: 50px;
+					flex-shrink: 0;
+				}
+
+				.audio-container audio {
+					flex: 2;
+					width: 100%;
+				}
+
+				.navigation-buttons {
+					margin-bottom: 100px; /* Pushes it above audio player */
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+				}
+
+				.tooltip-box {
+					position: absolute;
+					background-color: purple;
+					color: white;
+					padding: 5px 10px;
+					border-radius: 5px;
+					font-size: 14px;
+					width: auto;
+					max-width: 80%; /* Prevents it from going off screen */
+					max-height: 200px; /* Limiting the height */
+					overflow-y: auto; /* Adds a scrollbar if the content overflows */
+					word-wrap: break-word;
+					z-index: 1000;
+					left: 50%;
+					transform: translateX(-50%);
+					bottom: 45px; /* Keeps it a bit above the audio box */
+				}
+
+				/* Prevent tooltip box from overflowing vertically */
+				.tooltip-box p {
+					margin: 0;
+					padding: 0;
+				}
+			}
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../home.html">Home</a></li>
+            <li><a href="review1.html">Lonerism</a></li>
+            <li><a href="../contacts.html">Kapcsolat</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>6. Why Won't They Talk To Me</h1>
+        <p class="large-paragraph"> Ez már egy sokkal inkább árulkodó cím, és maga a refrén is egyben. A kérdés, „Miért nem beszélnek hozzám?”, remekül megragadja az album melankolikus magányát, és bemutatja, hogy Kevin mennyivel sebezhetőbbé, érzelmileg nyitottá tette magát ezen a lemezen az Innerspeaker-hez képest.</p>
+        
+		<p>A dal énje vágyik a kapcsolatokra, de nem képes megérteni, hogy mások miért nem akarnak vele foglalkozni, miért nem állnak vele szóba. Bebetonozódik benne a gondolat, hogy nem önszántából magányos (ellentétben az Innerspeaker énjével).<br/>Maga ez a szám tematikailag a tökéletes kontra a „Solitude Is Bliss”-re az előző albumjáról.</p>
+
+		<p>Ez a dal is egy szintetizátor-kollázzsal kezdődik, a buborékos szinti itt is megjelenik. <a href="https://www.youtube.com/watch?v=B41O9PO6Zw0" target="_blank">2020-ban megjelent videóklipben</a> látható, hogy a dal elején megjelenő Casio szintetizátor nem más, mint amit apjától örökölt. Ezzel is egyfajta nosztalgiát idéz elő, még ha csak Kevinben is. Az apja fontos szerepet játszott zenei karrierjében és az album utolsó száma is róla íródott. Emellett sok más számában is megemlítette őt.</p>
+
+		<div class="quote-image">
+            <img src="../images/whywont.gif" alt="whywont">
+            <blockquote><span style="color: purple;">Részlet a videóklipből</span></blockquote>
+        </div>
+
+
+		<p>Az első versszak nem habozik, rögtön a lényegre tér. A dal személye arról énekel, hogy kint van a „zónából” - elbambult, kikapcsolt az agya, elmélyült gondolataiban, önreflektál. A következő sorok nem köntörfalazzák az érzelmeit- „Olyannyira egyedül vagyok/ Semmi sincs számomra”, tehát megalapozza az önsajnálatot mint témát. </p>
+		<p>Ezután úgy dönt hazamegy (átvitten nem próbál kapcsolatokat szerezni, mert mások úgy sem törődnek vele), megpróbál észnél/józan maradni, nem engedi a gondolatoknak, hogy felülkerekedjenek rajta. Próbálkozik úgy tenni, úgy színlelni, mint ha semmi sem történt volna. Tehát valószínűleg kínos helyzetbe hozta magát, vagy mások miatt érezte rosszul magát. A „pretend”, azaz színlelni, itt arra utalhat, hogy igazából ő is tudja, hogy hiába keménykedik, küszköd, hogy neki nem kellenek mások, megvan egyedül, legbelül mégis vágyakozik az emberi kapcsolatokért.<br/> Ezt az követi, hogy egy magányos, öreg fához hasonlítja magát- mindketten egyedül vannak, nem tudnak elmozdulni és mindenki figyelmen kívül hagyja őket. Ezután kicsit játszik a humorral a szám énje, azt mondja, hogy „Whoops-a-daisy”, tehát „Hoppácska!”, ami egy igen gyerekes kifejezés. Arról énekel, hogy egy pillanatra úgy gondolta boldog, de hirtelen rájött, hogy ez mégsem így van- ez persze az előző sorokra utal vissza- kissé mintha naplót vezetne.</p>
+
+		<p><br/>Egy zenei szünet után újból megismétlődik a versszak, de két és fél sor megváltozik. Elsőként az, hogy azt mondja: a zónán kívül (gondolataiban elmélyedve) most már belátja, hogy nem kell nekik ő, de neki sem kellenek ők. Keserűen, de elfogadja a tényt, hogy magára maradt. Ennek ellenére folytatja korábbi gondolatmenetét, megismétli az előző versszakot. Viszont nem sokkal ezután elhagyja a fa metaforát, inkább csak azt mondja, hogy ő magányosnak lett a sors által rendeltetve: „A végzetem magányos, öreg énnek lenni”. Ez a versszak is ugyan azzal a humoros sorral végződik, mint az előző.</p>
+
+		<div class="quote-image">
+            <img src="../images/kevin9.jpg" alt="whywont">
+        </div>
+
+
+		<p><br/>Rögtön át is vált a kórusba a szám, ami elég egyszerű, de rengeteg érzelmet rejt magában. Csak annyiból áll, hogy: „Miért nem beszélnek hozzám?”, majd a sorok végén halkan: „Azt hittem boldog vagyok…”. Egyszerűségének ellenére a kórus megmutatja a narrátor frusztráltságát. Ismételgeti ugyanazt a sort, nem is másoktól, hanem magától kérdezi, hogy miért nem állnak vele szóba, átvitettebben miért is nem szeretik őt az emberek. A háttérben, halkan, szinte szenvedő hangon megjelenő gondolat, hogy úgy hitte boldog, azt mutatja, hogy eddig gőgösen azt gondolta, ő jól van egyedül, de realizálódott benne a fájdalmas valóság. Ez a repetició beleszögeli a hallgató fejébe, hogy a dal énje képtelen elmenekülni magányosságából, de ugyanakkor képtelen racionalizálni azt, hiába győzködi magát.<br/> A dob szintén repetitív, és mint a „Be Above It”-ban, segít átadni az üzenetet. A háttérben Kevin szenvedő éneklése (ami csak az „a” magánhangzó vokalizálása) néha szinte jajgatás azt mutatja, hogy már-már a sírás szélén áll a dal személye.</p>
+		
+		<div class="quote-image">
+            <img src="../images/kevin11.jpg" alt="whywont">
+        </div>
+
+		
+		<p><br/>Ezt követően egy híd következik, ahol kicsit más fordulatot vesz a szám. Először is azt mondja, hogy őt igazán nem is érdekli az egész dolog. Dacosan azt mondja, hogy nem is figyel oda egy szóra sem, amit mások mondanak. Elhitette magával, hogy őt hidegen hagyja mindenki más, de fájdalmasan egyértelmű, hogy pont az ellentétje érvényesül. Úgy folytatja, hogy mindenki csak magáról beszél egész nap, ezzel felfedve mit is érez igazán- sértődött másokra, hogy vele nem foglalkoznak.<p></p> Az utolsó sorban a következőt mondja: „Egy nap sztár leszek, és majd megbánják.” (ez kissé ironikus, mert tényleg „sztár” lett Parkerből). Makacsul ellenszegül másoknak, kijelenti, hogy majd ő úgy is sikeresebb lesz, jobb élete lesz, és akkor majd minnyájan megbánják, hogy nem barátkoztak vele. Persze ezzel csak érvényesülni akar, azt akarja, hogy elismerjék, de sikeresen megmutatja, hogy milyen könnyedén áthárítja a felelősséget a szenvedéseiért másokra. Nem volt képes elérni, amit akart, így a (szociálisan) sikeres embereket támadja.</p>
+
+		<p>Ez a rész végig viszonylag tisztább, kevesebb hangszerrel. Az éneklés kicsit inkább lemondó, elégikus hangulatú. Legmélyen realizálódik benne, hogy képtelen szembeszállni a magányából eredő fájdalommal. Inkább deflektálja érzéseit, másokat hibáztat, ostoroz miatta. Ez a fájdalmas, szinte hamis düh utolsó mentsvárnak érződik, mivel kifogyott az opciókból és nincs hova mennie, nem tud mit kezdeni magányával- nincs megoldás. Ő is tudja legbelül, hogy ez már nem segít, csak próbálja visszanyerni az irányítást élete felett. Érzelemileg és társadalmilag is már teljesen izolált lett, számára már nincs kiút.</p>
+
+		<p>Majd visszajön az ismétlődő kórus, a lemondás ekkora már teljesen egyértelmű. A szám végéig élvezhetjük Kevin mesterien érzelmes zenei összeállítását, enged elmélyülni saját gondolatainkban. A szám egy növekvő rátájú LFO-s szintetizátorral végződik.</p>
+		<div></div>
+		<p><br/>A fő szintetizátoron a számban phaser, delay és kórus effekt van. Emelett megjelenik egy lead- illetve egy arpeggiált szintetizátor is. Az egész szám mindössze kettő, egymás melletti gitár akkordból áll (G dúr és F# moll), amiket egy akusztikus gitár játszik. Az F# a G dúr skála 7. hangja, és Kevin tipikusan szereti használni az 1. hang után egy oktávval lejjebb a 7. hangot. A szintetizátor többnyire a D dúrt (5. hang, domináns akkord) és A mollt (2. hang, viszont az A dúr is megjelenik, ami az F# moll relatív dúrja) játssza.</p>
+
+		<p>A dobolás a <a class="tooltip" href="https://en.wikipedia.org/wiki/The_Flaming_Lips" target="_blank" data-image="../images/flame1.jpg">Flaming Lips<img src="../images/flame1.jpg"></a> „<a class="tooltip" href="https://en.wikipedia.org/wiki/Race_for_the_Prize" target="_blank" data-image="../images/race1.jpg">Race For The Prize<img src="../images/race1.jpg"></a>”-ból inspirálódott, főleg a kompresszió és szaturáció részlegen. Késöbb Parker említette is ezt a számot egy interjúban, mint nagy inspiráció. Kevinnek segített az albumon a mixingben <a class="tooltip" href="https://en.wikipedia.org/wiki/Dave_Fridmann" target="_blank" data-image="../images/fridm1.jpg">David Fridmann<img src="../images/fridm1.jpg"></a>, aki rengeteg The Flaming Lips albumot mixelt, illetve az <a class="tooltip" href="https://en.wikipedia.org/wiki/MGMT" target="_blank" data-image="../images/mgmt1.jpg">MGMT<img src="../images/mgmt1.jpg"></a>, <a class="tooltip" href="https://en.wikipedia.org/wiki/Black_Moth_Super_Rainbow" target="_blank" data-image="../images/bmsr1.jpg">Black Moth Super Rainbow<img src="../images/bmsr1.jpg"></a> és <a class="tooltip" href="https://en.wikipedia.org/wiki/Magdalena_Bay_(duo)">Magdalena Bay<img src="../images/magda1.jpg"></a> albumain is dolgozott.<br>Sajnos a basszus ezen a számon nem túl kreatív, elég monoton, de elvégzi feladatát.</p>
+
+
+
+
+
+        
+	<div class="navigation-buttons"> 
+			<a href="page8.html">Előző Oldal</a> 
+			<a href="page10.html">Következő Oldal</a> 
+		</div> 
+	</div>
+	
+	<div class="audio-container">
+        <div class="audio-info">
+			<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6IM45SqAURH6PrvziDs1RQ?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+    </div>
+       
+
+
+	
+    <div id="tooltip-box" class="tooltip-box"></div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector(".content").style.opacity = 1;
+
+            const tooltipBox = document.getElementById("tooltip-box");
+            document.querySelectorAll(".tooltip-click").forEach(item => {
+                item.addEventListener("click", function (event) {
+                    tooltipBox.textContent = this.getAttribute("data-text");
+                    tooltipBox.style.left = event.pageX + 10 + "px";
+                    tooltipBox.style.top = event.pageY + 10 + "px";
+                    tooltipBox.style.display = "block";
+                    document.addEventListener("click", function hideTooltip(e) {
+                        if (!item.contains(e.target)) {
+                            tooltipBox.style.display = "none";
+                            document.removeEventListener("click", hideTooltip);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

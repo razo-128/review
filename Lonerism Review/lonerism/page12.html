@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lonerism Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: white;
+            color: black;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 100px;
+            font-size: 1rem;
+        }
+
+        nav {
+            background-color: black;
+            padding: 10px;
+            width: 100%;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            justify-content: center;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+		.content {
+			max-width: 800px;
+			width: 100%;
+			margin: 0 auto; /* Ensure content is centered */
+			padding: 20px;
+			opacity: 0;
+			transition: opacity 1s ease-in;
+			margin-bottom: 120px; /* Prevent content from going under the audio player */
+		}
+		
+        h1, .quote-image, .navigation-buttons {
+            text-align: center;
+        }
+
+        p {
+            text-align: left;
+        }
+
+        .quote-image {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+			 max-width: 600px; /* Adjust the width of the container */
+			margin: 0 auto; /* Center the container */
+        }
+
+        .quote-image img {
+		    width: 100%; /* Makes the image responsive */
+			max-width: 550px; /* Restrict the maximum width */
+			height: auto; /* Maintain aspect ratio */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .quote-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .tooltip {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            position: relative;
+            color: purple;
+        }
+
+        .tooltip img {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .tooltip:hover img {
+            display: block;
+        }
+
+        .tooltip-click {
+            border-bottom: 2px dotted purple;
+            cursor: pointer;
+            color: purple;
+        }
+
+        .tooltip-box {
+            display: none;
+            position: absolute;
+            background-color: purple;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: normal;
+            font-size: 15px;
+            width: 300px;
+            max-width: 90%;
+            z-index: 1000;
+        }
+
+        .navigation-buttons {
+            margin-top: 20px;
+        }
+
+        .navigation-buttons a {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navigation-buttons a:hover {
+            background-color: purple;
+            color: white;
+        }
+
+        .audio-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .audio-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .audio-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .audio-info img:hover {
+            transform: scale(1.1);
+        }
+
+        audio::-webkit-media-controls-panel {
+            background-color: purple;
+            border-radius: 10px;
+        }
+
+        strong {
+            font-weight: bold !important;
+        }
+
+        .large-paragraph {
+            font-size: 18px;
+            font-weight: bold;
+        }
+			span.italic {
+				font-style: italic;
+		}
+		
+		.flex-container {
+			display: flex;
+			align-items: center;
+			gap: 20px; /* Adjust the space between elements */
+			margin-top: 10px;
+		}
+
+		.flex-container img {
+			width: 85%; /* Adjust image size */
+			height: auto;
+			border-radius: 12px;
+		}
+
+        /* Responsive styles */
+			@media (max-width: 600px) {
+				body {
+					font-size: 0.9rem;
+					padding-bottom: 80px; /* Ensures space for audio player */
+				}
+
+				.audio-container {
+					position: fixed;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					background-color: #f3f3f3;
+					padding: 10px;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 10px;
+					box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+				}
+
+				.audio-info {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					flex: 1;
+					min-width: 0;
+				}
+
+				.audio-info img {
+					width: 50px;
+					height: 50px;
+					flex-shrink: 0;
+				}
+
+				.audio-container audio {
+					flex: 2;
+					width: 100%;
+				}
+
+				.navigation-buttons {
+					margin-bottom: 100px; /* Pushes it above audio player */
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+				}
+
+				.tooltip-box {
+					position: absolute;
+					background-color: purple;
+					color: white;
+					padding: 5px 10px;
+					border-radius: 5px;
+					font-size: 14px;
+					width: auto;
+					max-width: 80%; /* Prevents it from going off screen */
+					max-height: 200px; /* Limiting the height */
+					overflow-y: auto; /* Adds a scrollbar if the content overflows */
+					word-wrap: break-word;
+					z-index: 1000;
+					left: 50%;
+					transform: translateX(-50%);
+					bottom: 45px; /* Keeps it a bit above the audio box */
+				}
+
+				/* Prevent tooltip box from overflowing vertically */
+				.tooltip-box p {
+					margin: 0;
+					padding: 0;
+				}
+			}
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../home.html">Home</a></li>
+            <li><a href="review1.html">Lonerism</a></li>
+            <li><a href="../contacts.html">Kapcsolat</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>9. Elephant</h1>
+        <p class="large-paragraph"> Az második single az albumról, és az szám, amely Kevin Parker házának a felét kifizette. </p>
+        
+		 <div class="flex-container">
+			<p>Egyik legrégebbi száma, egy teljes zenei anomália ezen az albumon, de témában valahogy mégis illik ide. Kevin azt mondta, hogy a Perth-i rockszintér arrogáns zenekarai inspirálták. A szám egy régebbi <a class="tooltip" href="https://www.youtube.com/watch?v=Sz6zcUf_XfU" target="_blank" data-image="../images/elephant_demo.jpg">demóját<img src="../images/eledemo.jpg"></a> az album 10 éves évfordulóján kiadta.</p>
+			<div class="quote-image">
+				<img src="../images/eledemo.jpg" alt="">
+			</div>
+		</div>
+		<p>Maga a dal zeneileg inkább blues-osabb, jobban hajaz a <a class="tooltip" href="https://www.discogs.com/artist/4559950-The-Dee-Dee-Dums" target="_blank" data-image="../images/deedee.jpg">The Dee Dee Dums<img src="../images/deedee.jpg"></a>-ra vagy a <a class="tooltip" href="https://en.wikipedia.org/wiki/Tame_Impala_(EP)" target="_blank" data-image="../images/ep.jpg">Tame Impala EP<img src="../images/tameep.jpg"></a>-ben hallot zenékre.</p>
+
+		<p>A szám jelentése nem túl nehezen megfejthető, és hasonlít arra a dühre amit már a „<a class="tooltip" href="page9.html">Why Won’t They Talk To Me</a>”-ben láttunk. A narrátor kifigurázza, felfedi az „elefánt”, az egocentrikus, arrogáns népszerű srác sebezhetőségeit. Kevin azt nyilatkozta, hogy egy magányos ember szemszögéből ezek az nagyképű emberek számára mindig elefántoknak tűntek.</p>
+
+		<p>Mivel egy single, videóklip is járt mellé. Mint a zenéje, a dal klipje sem teljesen illik ebbe az albumba. Egy pszichedelikusan megvágott videó, melyben a zenekar tagjai is az ausztrál táj között váltakozik.</p>
+		        <div class="quote-image">
+            <img src="../images/ele1.gif" alt="blank">
+            <blockquote><span style="color: purple;">Részlet a videóklipből</span></blockquote>
+        </div>
+		
+		<p>A szám elején, az első versszakban arról beszél, hogy ezt az az embert „elefántnak” látja, aki csak azért is lóbálja ormányát, mert megteheti. Tehát a sok „menősködő”, arrogáns dolgot csak azért csinálja, mert tudja, hogy következmények nélkül teheti. A dal énje úgy folytatja, hogy az „elefánt” tudja, hogy mindenki arról álmodozik, hogy jóban lehessen vele, de az esélyeik csekélyek, ő nem viszonozza a barátságokat. A narrátor ezzel kiemeli, hogy ő a figyelemhajhász, öntelt embereket megveti. Ezután azt mondja, hogy „Mr. Shuck” kicsit sem szerény, mindenkinek megmondja, hogy ő felettük áll, jobb náluk.</p>
+
+		<p>Ezt az követi, hogy a narrátor elkezdi feltárni az „elefánt” sebezhetőségeit. Azt gondolja, hogy azért ilyen, mert valamilyen trauma érte és így tud vele megbirkózni, ezért ilyen kőszívű. Folyatja, azt mondja, hogy a barátai csak félelemből követik, nem hűségből. Sőt, ezeket a „barátokat” az sem érdekelné, ha egy nap csak eltűnne az „elefánt”. Majd a versszakot azzal zárja, hogy „Oh nézd, ott jön le a lépcsőn. Ez egy szarkasztikus megfigyelés, igazából senkit sem érdekelnek a grandiózus belepői. Ezek már kiszámíthatóvá váltak, de mindenki ugyanúgy meglepettnek tetteti magát, annak reményében, hogy megkedveli őket.</p>
+
+		<p>Egy halk suttogás után, kissé mintha a dal személyének barátja oda súgna neki, hogy „Itt jön!”, egy zenei szünet következik. Ebben a szünetben igazán érezhető válik, hogy ez a szám nem erre az albumra készült. Tipikus garage rock szám, de ennek ellenére fülbemászó, nagyon is élvezhető. Nem véletlenül használták már fel rengeteg autóreklámban. Sőt, még egy ausztrál gyerekzene zenekar, a <a class="tooltip" href="https://en.wikipedia.org/wiki/The_Wiggles" target="_blank" data-image="../images/wiggles.jpg">The Wiggles<img src="../images/wiggles.jpg"></a> is feldolgozta, majd Parkerrel <a href="https://www.youtube.com/watch?app=desktop&v=chRxyWkJFY4&" target="_blank">előadták</a>.</p>
+
+		<div class="quote-image">
+            <img src="../images/kevin15.jpg" alt="blank">
+        </div>
+
+		<p>A második versszak egy metaforával kezdődik. Az „elefánt” letépte a <a class="tooltip" href="#" target="_blank" data-image="../images/cadi.jpg">Cadillac<img src="../images/cadi.jpg"></a>-jéről a visszapillantót, mert nem szeret „visszanézni”. Szeret tehát úgy tenni, hogy csak is a jelenben él, de ez a biztonságába kerül. Illetve nem szeret reflektálni, nem szeret magába nézni, mert akkor realizálná hibáit- miközben persze tökéletesnek gondolja magát. A Cadillac, mint luxusmárka, a hiúságot jelképezi. Aztán a narrátor azt mondja, hogy ez az öntelt srác úgy beszél, mint akinek a véleménye egyszerű tény, megerősítve azt, hogy csacsener, mindenre rábolintó emberekkel van körbevéve, akik minden szavával egyetértenek.</p>
+
+		<p>A versszak második felében fordulat történik- valaki megragadta a gallérját, átvitt értelemben valaki konfrontálja, megmondja a magáét, lehordja őt. Ettől az „elefánt” összeroppan, „végigsírta a hazavezető utat”. <br/>Ennek a nyilvános megszégyenítésnek az ellenére, amikor legközelebb látták, akkor már „senki egy dologra sem emlékezett”. Úgy tett, mint ha meg sem történt volna, és az általa megfélemlített fejbólintó jánosok engedelmeskedtek, hogy megvédjék az egoját. A szám azzal végződik, hogy a szám énje csak annyit mond „a végzetekig így is fog maradni”. Ez alatt azt érti, hogy az ilyen emberek nem fognak megváltozni, sohasem fognak magukba nézni és észrevenni hibáikat.<br/> A szám elég abruptul végződik, egy choked hi-hat, egy utolsó basszus hang és csönd.</p>
+
+		<p><br>Mindössze csak két szintetizátor található ezen a dalon, az egyik egy orgona, a másik pedig egy lead, mindkettő egyszerű delay effektel.</p>
+
+		<p>A gitár igazán jól átadja Kevin korai hangzását, csak egyszerű torzítás és egy Fuzz Face van rajta, de tökéletesen működik a számon.</p>
+
+		<p>A dobolás elég egy viszonylag egyszerű, erőteljes <a href="https://en.wikipedia.org/wiki/Shuffle_beat" target="_blank">shuffle</a> beat, hi-hat akcentusokkal. Ez szembe megy az album többi számán található, precíz, intrikált dobolással, de érthető, hisz a shuffle kéz a kézben jár a blues-al. Magukon a dobokon erős szaturáció és kompresszió van. A számon kivételesen nem Kevin, hanem bandatag Jay Watson játszott.</p>
+
+		<p>A basszus, a dobbal együtt, olyan hatást ad, mintha egy elefánt sétálna, taposna a fülünkben. Igaz, hogy csak egy vagy néhány hangot játszik, de ez az egyszerűség pozitívan komplimentálja a számot.</p>
+
+
+
+        
+	<div class="navigation-buttons"> 
+			<a href="page11.html">Előző Oldal</a> 
+			<a href="page13.html">Következő Oldal</a> 
+		</div> 
+	</div>
+	
+	 <div class="audio-container">
+        <div class="audio-info">
+			<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6qZjm61s6u8Ead9sWxCDro?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+       
+
+
+	
+    <div id="tooltip-box" class="tooltip-box"></div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector(".content").style.opacity = 1;
+
+            const tooltipBox = document.getElementById("tooltip-box");
+            document.querySelectorAll(".tooltip-click").forEach(item => {
+                item.addEventListener("click", function (event) {
+                    tooltipBox.textContent = this.getAttribute("data-text");
+                    tooltipBox.style.left = event.pageX + 10 + "px";
+                    tooltipBox.style.top = event.pageY + 10 + "px";
+                    tooltipBox.style.display = "block";
+                    document.addEventListener("click", function hideTooltip(e) {
+                        if (!item.contains(e.target)) {
+                            tooltipBox.style.display = "none";
+                            document.removeEventListener("click", hideTooltip);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
